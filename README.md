@@ -1,3 +1,6 @@
+# Start the application
+- `npm start`
+
 # Initial Setup
 ### package.json
 - `npm init`. Entry point is app.ts
@@ -34,6 +37,3 @@ app.listen(port,()=>{
     console.log(`Server is started at port:${port}`);
 })
 ```
-
-# Start the application
-- `npm start`
