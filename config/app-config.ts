@@ -1,5 +1,5 @@
 
-import { AppConfig } from "../Interface/appConfig";
+import { AppConfig } from "../Interface/AppConfig";
 
 let appConfig:AppConfig = {
     port:3000,
