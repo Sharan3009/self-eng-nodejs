@@ -13,10 +13,10 @@ const pad = (num:number):string => (num > 9 ? "" : "0") + num;
 var generator = (time:Date,index:number):string => {
     const fileName:string = "debug.log";
     if (!time) return fileName;
-    var year = time.getFullYear();
-    var month = pad(time.getMonth() + 1);
-    var date = pad(time.getDate());
-    var folder = `${year}-${month}-${date}`;
+    var year:number = time.getFullYear();
+    var month:string = pad(time.getMonth() + 1);
+    var date:string = pad(time.getDate());
+    var folder:string = `${year}-${month}-${date}`;
 
     return `${folder}/${folder}-${index}-${fileName}`;
 };
