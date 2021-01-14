@@ -1,7 +1,8 @@
 import express from 'express';
+import config from './config/app-config';
 
 const app:express.Application = express();
-const port:number = 3000;
+const port = config.port;
 app.get("/",(req:express.Request,res:express.Response)=>{
     res.send("Hello world")
 })
