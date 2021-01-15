@@ -36,7 +36,7 @@ class HttpRequestLogger {
         path: path.join(__dirname,"../../", this.folderName)
     })
 
-    public start = () =>{
+    public start = ():void =>{
         if(config.env===Environment.dev){
             // log all respnses to console
             this.app.use(morgan(MorganFormat.dev));
