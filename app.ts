@@ -1,5 +1,5 @@
 import express from 'express';
-import config from './config/app-config';
+import config from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 
 const app:express.Application = express();
