@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import fs from 'fs';
-import HttpRequestLogger from './app/utils/httpsRequestLogger';
+import HttpRequestLogger from './app/utils/httpRequestLogger';
 
 const app:express.Application = express();
 
