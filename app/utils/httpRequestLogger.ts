@@ -5,14 +5,15 @@ import {Application} from 'express';
 import config from '../../config/appConfig';
 import { Environment } from '../../Enums/Environment';
 import { MorganFormat } from '../../Enums/MorganFormat';
+import httpLoggerConfig from '../../config/httpLoggerConfig';
 
 class HttpRequestLogger {
 
     private app:Application;
-    private fileName:string = "debug.log";
-    private folderName:string = "httpLogs";
-    private interval:string = "1d"; //rotate daily
-    private size:string = "10M"; // rotate if size exceed 10mb
+    private fileName:string = httpLoggerConfig.fileName;
+    private folderName:string = httpLoggerConfig.folderName;
+    private interval:string = httpLoggerConfig.interval; //rotate daily
+    private size:string = httpLoggerConfig.size; // rotate if size exceed 10mb
 
     constructor(app:Application){
         this.app = app;
