@@ -33,7 +33,7 @@ class HttpRequestLogger {
     private accessLogStream:rfs.RotatingFileStream = rfs.createStream(<rfs.Generator>this.generator, {
         interval: this.interval,
         size: this.size,
-        path: path.join(__dirname, this.folderName),
+        path: path.join(__dirname,"../", this.folderName)
     })
 
     public start = () =>{
