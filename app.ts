@@ -9,7 +9,8 @@ const port:number = config.port;
 const startup = new AppStartUtil(app);
 
 // without bodyParser posting method cannot happen and had to be anywhere before routes function
-startup.setHttpLogger()
+startup.setDotEnv()
+.setHttpLogger()
 .useBodyParser()
 .useCookieParser()
 .useHelmet()
