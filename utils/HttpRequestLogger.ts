@@ -1,4 +1,4 @@
-import rfs from 'rotating-file-stream';
+import * as rfs from 'rotating-file-stream';
 import morgan from 'morgan';
 import path from 'path';
 import {Application} from 'express';
