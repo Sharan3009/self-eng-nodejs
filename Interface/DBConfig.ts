@@ -1,3 +1,4 @@
 export interface DBConfig{
-    readonly uri: string
+    host: string,
+    name: string
 }

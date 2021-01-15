@@ -1,6 +1,6 @@
 import express from 'express';
 require('dotenv').config(); // this should be placed before everything because it is responsible for environment variables
-import config from './config/appConfig';
+import appConfig from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 
 const app:express.Application = express();
@@ -15,7 +15,7 @@ startup.setHttpLogger()
 .includeModels()
 .includeRoutes();
 
-const port:number = config.get("port");
+const port:number = appConfig.get("port");
 
 app.get("/",(req:express.Request,res:express.Response)=>{
     res.send("Hello world");

@@ -2,7 +2,7 @@ import * as rfs from 'rotating-file-stream';
 import morgan from 'morgan';
 import path from 'path';
 import {Application} from 'express';
-import config from '../../config/appConfig';
+import appConfig from '../../config/appConfig';
 import { Environment } from '../../Enums/Environment';
 import { MorganFormat } from '../../Enums/MorganFormat';
 import httpLoggerConfig from '../../config/httpLoggerConfig';
@@ -38,7 +38,7 @@ class HttpRequestLogger {
     })
 
     public start = ():void =>{
-        if(config.get("env")===Environment.dev){
+        if(appConfig.get("env")===Environment.dev){
             // log all respnses to console
             this.app.use(morgan(MorganFormat.dev));
         } else {
