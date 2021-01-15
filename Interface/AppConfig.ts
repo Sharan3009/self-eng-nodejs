@@ -5,5 +5,5 @@ export interface AppConfig {
     readonly allowedCorsOrigin: string,
     env?: string,
     db?: DBConfig,
-    apiVersion?: string
+    apiv1?: string
 }

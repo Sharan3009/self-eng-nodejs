@@ -1,15 +1,17 @@
 
+import { Cors } from "../Enums/Cors";
+import { Environment } from "../Enums/Environment";
 import { AppConfig } from "../Interface/AppConfig";
 
 let appConfig:AppConfig = {
     port:3000,
-    allowedCorsOrigin:"*"
+    allowedCorsOrigin:Cors.all
 };
 
-appConfig.env = "dev";
+appConfig.env = Environment.dev;
 appConfig.db = {
     uri:"mongodb://127.0.0.1:27017/selfEngDB"
 };
-appConfig.apiVersion = "/api/v1";
+appConfig.apiv1 = "/api/v1";
 
 export default appConfig;
