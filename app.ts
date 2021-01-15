@@ -1,21 +1,21 @@
 import express from 'express';
+require('dotenv').config(); // this should be placed before everything because it is responsible for environment variables
 import config from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 
 const app:express.Application = express();
 
-const port:number = config.port;
-
-const startup = new AppStartUtil(app);
+const startup:AppStartUtil = new AppStartUtil(app);
 
 // without bodyParser posting method cannot happen and had to be anywhere before routes function
-startup.setDotEnv()
-.setHttpLogger()
+startup.setHttpLogger()
 .useBodyParser()
 .useCookieParser()
 .useHelmet()
 .includeModels()
 .includeRoutes();
+
+const port:number = config.get("port");
 
 app.get("/",(req:express.Request,res:express.Response)=>{
     res.send("Hello world");

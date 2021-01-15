@@ -2,16 +2,29 @@
 import { Cors } from "../Enums/Cors";
 import { Environment } from "../Enums/Environment";
 import { AppConfig } from "../Interface/AppConfig";
+import convict from "convict";
 
-let config:AppConfig = {
-    port:3000,
-    allowedCorsOrigin:Cors.all
-};
+const config:convict.Config<AppConfig> = convict({
+    env:{
+        format: Object.values(Environment),
+        env: "NODE_ENV",
+        default: ""
+    },
+    allowedCorsOrigin:{
+        format: Object.values(Cors),
+        env: "ALLOWED_CORS_ORIGIN",
+        default: ""
+    },
+    port:{
+        format: "port",
+        env: "PORT",
+        default: -1
+    },
+    apiVersion:{
+        default: "/api/v1/"
+    }
+})
 
-config.env = Environment.dev;
-config.db = {
-    uri:"mongodb://127.0.0.1:27017/selfEngDB"
-};
-config.apiv1 = "/api/v1";
+config.validate();
 
 export default config;

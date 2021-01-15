@@ -2,7 +2,6 @@ import {Application} from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import fs from 'fs';
 import HttpRequestLogger from './httpRequestLogger';
 
@@ -61,11 +60,6 @@ export default class AppStartUtil{
         // start logging the requests
         const httpLogger:HttpRequestLogger = new HttpRequestLogger(this.app);
         httpLogger.start();
-        return this;
-    }
-
-    public setDotEnv = ():AppStartUtil => {
-        dotenv.config();
         return this;
     }
 }

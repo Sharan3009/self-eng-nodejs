@@ -38,7 +38,7 @@ class HttpRequestLogger {
     })
 
     public start = ():void =>{
-        if(config.env===Environment.dev){
+        if(config.get("env")===Environment.dev){
             // log all respnses to console
             this.app.use(morgan(MorganFormat.dev));
         } else {

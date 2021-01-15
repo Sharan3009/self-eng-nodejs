@@ -1,9 +1,6 @@
-import { DBConfig } from "./DBConfig";
-
 export interface AppConfig {
-    readonly port: number,
-    readonly allowedCorsOrigin: string,
-    env?: string,
-    db?: DBConfig,
-    apiv1?: string
+    env: string;
+    allowedCorsOrigin: string;
+    port: number;
+    apiVersion: string;
 }
