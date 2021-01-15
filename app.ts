@@ -13,7 +13,8 @@ startup.setHttpLogger()
 .useCookieParser()
 .useHelmet()
 .includeModels()
-.includeRoutes();
+.includeRoutes()
+.connectDB();
 
 const port:number = appConfig.get("port");
 

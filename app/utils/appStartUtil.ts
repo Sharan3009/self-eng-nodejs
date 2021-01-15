@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import fs from 'fs';
 import HttpRequestLogger from './httpRequestLogger';
+import db from "./mongoose";
 
 export default class AppStartUtil{
 
@@ -60,6 +61,11 @@ export default class AppStartUtil{
         // start logging the requests
         const httpLogger:HttpRequestLogger = new HttpRequestLogger(this.app);
         httpLogger.start();
+        return this;
+    }
+
+    public connectDB = ():AppStartUtil => {
+        db.connect();
         return this;
     }
 }

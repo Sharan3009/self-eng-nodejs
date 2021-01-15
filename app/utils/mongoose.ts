@@ -1,0 +1,57 @@
+import dbConfig from '../../config/dbConfig';
+import mongoose, { Connection, ConnectOptions } from 'mongoose';
+import { DbEvents } from '../../Enums/DbEvents';
+
+class Mongoose {
+    
+    private host:string = dbConfig.get("host");
+    private dbName:string = dbConfig.get("name");
+    private db:string = "mongodb";
+    private uri:string = `${this.db}://${this.host}/${this.dbName}`;
+    private moncon:Connection = mongoose.connection;
+
+    constructor(){
+        this.onDbConnect();
+        this.onDbDisconnect();
+        this.onDbError();
+        this.onNodeProcessEnd();
+    }
+
+    public connect = ():void => {
+        var options:ConnectOptions = {
+            useNewUrlParser:true,
+            useUnifiedTopology:true
+        }
+        mongoose.connect(this.uri,options);
+    }
+
+    private onDbConnect = ():void => {
+        var event = DbEvents.con;
+        this.moncon.on(event,()=>{
+            console.log(`${this.dbName} is connected at ${this.host}`);
+        })
+    }
+
+    private onDbDisconnect = ():void => {
+        var event = DbEvents.discon;
+        this.moncon.on(event,function(){
+            // do nothing yet
+        })
+    }
+
+    private onDbError = ():void => {
+        var event = DbEvents.err;
+        this.moncon.on(event,function(){
+            process.exit(0);
+        })
+    }
+
+    private onNodeProcessEnd = ():void => {
+        var event = DbEvents.processEnd;
+        process.on(event,()=>{
+            this.moncon.close();
+        })
+    }
+}
+
+export default new Mongoose();
