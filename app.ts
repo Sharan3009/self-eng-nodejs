@@ -7,7 +7,8 @@ const app:express.Application = express();
 const port:number = config.port;
 
 // start logging the requests
-new HttpRequestLogger(app).start();
+const httpLogger = new HttpRequestLogger(app);
+httpLogger.start();
 
 app.get("/",(req:express.Request,res:express.Response)=>{
     res.send("Hello world");
