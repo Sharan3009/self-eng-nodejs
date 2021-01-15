@@ -3,7 +3,7 @@ import config from './config/app-config';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import HttpRequestLogger from './utils/HttpRequestLogger';
+import HttpRequestLogger from './app/utils/HttpRequestLogger';
 
 const app:express.Application = express();
 

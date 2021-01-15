@@ -2,9 +2,9 @@ import * as rfs from 'rotating-file-stream';
 import morgan from 'morgan';
 import path from 'path';
 import {Application} from 'express';
-import config from '../config/app-config';
-import { Environment } from '../Enums/Environment';
-import { MorganFormat } from '../Enums/MorganFormat';
+import config from '../../config/app-config';
+import { Environment } from '../../Enums/Environment';
+import { MorganFormat } from '../../Enums/MorganFormat';
 
 class HttpRequestLogger {
 
