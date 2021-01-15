@@ -2,7 +2,7 @@ import * as rfs from 'rotating-file-stream';
 import morgan from 'morgan';
 import path from 'path';
 import {Application} from 'express';
-import config from '../../config/app-config';
+import config from '../../config/appConfig';
 import { Environment } from '../../Enums/Environment';
 import { MorganFormat } from '../../Enums/MorganFormat';
 
@@ -33,7 +33,7 @@ class HttpRequestLogger {
     private accessLogStream:rfs.RotatingFileStream = rfs.createStream(<rfs.Generator>this.generator, {
         interval: this.interval,
         size: this.size,
-        path: path.join(__dirname,"../", this.folderName)
+        path: path.join(__dirname,"../../", this.folderName)
     })
 
     public start = () =>{
