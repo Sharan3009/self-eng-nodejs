@@ -37,3 +37,6 @@ app.listen(port,()=>{
     console.log(`Server is started at port:${port}`);
 })
 ```
+
+# MongoDB
+- Mongodb should be installed on the windows and the service must be in the running state. Only after that the backend will be able to connect.
