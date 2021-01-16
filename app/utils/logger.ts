@@ -1,7 +1,9 @@
-import { createLogger,Logger,format } from 'winston';
+import { createLogger,Logger,format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import loggerConfig from '../../config/loggerConfig';
+import appConfig from "../../config/appConfig";
 import path from 'path';
+import { Environment } from '../../Enums/Environment';
 
 class CustonLogger {
 
@@ -26,12 +28,24 @@ class CustonLogger {
     }
 
     private initiateLogger = ():void =>{
+        if(appConfig.get("env")===Environment.dev){
+            this.devLogger();
+        } else {
+            this.prodLogger();
+        }
+        this.setLogger();
+    }
+
+    private devLogger= ():void => {
+        this.transport =  new transports.Console();
+    }
+
+    private prodLogger = ():void=>{
         this.transport = new DailyRotateFile({
             filename: path.join(`./${this.folderName}/%DATE%/`,`${this.fileName}`),
             datePattern: this.datePattern,
             maxSize: this.size,
         })
-        this.setLogger();
     }
 
     private setLogger = ():void =>{
