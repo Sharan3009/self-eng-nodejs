@@ -5,7 +5,8 @@ let config:HttpRequestConfig = {
     fileName : "debug.log",
     folderName: "logs",
     datePattern: FileFrequency.daily,
-    size: "10m"
+    size: "10m",
+    timeFormat: "YYYY-MM-DD T HH:mm A"
 }
 
 export default config;

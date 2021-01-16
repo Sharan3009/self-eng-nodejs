@@ -63,7 +63,9 @@ export default class AppStartUtil{
         this.app.use(morgan("combined",{
             stream: {
                 write: function(str:string){
-                    logger.error(`MORGAN - ${str}`);
+                    logger.error(str,{
+                        source: "Morgan"
+                    });
                 }
             }
         }))
