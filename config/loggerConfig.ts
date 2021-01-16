@@ -1,10 +1,11 @@
+import { FileFrequency } from '../Enums/FileFrequency';
 import {HttpRequestConfig} from '../Interface/HttpRequestConfig';
 
 let config:HttpRequestConfig = {
     fileName : "debug.log",
-    folderName: "httpLogs",
-    interval: "1d",
-    size: "10M"
+    folderName: "logs",
+    datePattern: FileFrequency.daily,
+    size: "10m"
 }
 
 export default config;

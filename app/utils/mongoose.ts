@@ -50,6 +50,8 @@ class Mongoose {
         var event = DbEvents.processEnd;
         process.on(event,()=>{
             this.moncon.close();
+            // if we do no exit the process, then the port stays occupied
+            process.exit(0);
         })
     }
 }

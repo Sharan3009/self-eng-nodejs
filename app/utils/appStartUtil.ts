@@ -3,8 +3,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import fs from 'fs';
-import HttpRequestLogger from './httpRequestLogger';
 import db from "./mongoose";
+import logger from "../utils/logger";
+import morgan from "morgan";
 
 export default class AppStartUtil{
 
@@ -57,10 +58,15 @@ export default class AppStartUtil{
         return this;
     }
 
-    public setHttpLogger = ():AppStartUtil => {
+    public useMorgan = ():AppStartUtil => {
         // start logging the requests
-        const httpLogger:HttpRequestLogger = new HttpRequestLogger(this.app);
-        httpLogger.start();
+        this.app.use(morgan("combined",{
+            stream: {
+                write: function(str:string){
+                    logger.info(str);
+                }
+            }
+        }))
         return this;
     }
 

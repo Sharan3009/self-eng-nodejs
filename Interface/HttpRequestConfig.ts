@@ -1,6 +1,6 @@
 export interface HttpRequestConfig {
     fileName:string,
     folderName: string,
-    interval: string,
+    datePattern: string,
     size: string
 }

@@ -2,13 +2,14 @@ import express from 'express';
 require('dotenv').config(); // this should be placed before everything because it is responsible for environment variables
 import appConfig from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
+import logger from "./app/utils/logger";
 
 const app:express.Application = express();
 
 const startup:AppStartUtil = new AppStartUtil(app);
 
 // without bodyParser posting method cannot happen and had to be anywhere before routes function
-startup.setHttpLogger()
+startup.useMorgan()
 .useBodyParser()
 .useCookieParser()
 .useHelmet()
@@ -23,5 +24,5 @@ app.get("/",(req:express.Request,res:express.Response)=>{
 })
 
 app.listen(port,()=>{
-    console.log(`Server is started at port:${port}`);
+    logger.info(`Server is started at port:${port}`);
 })
