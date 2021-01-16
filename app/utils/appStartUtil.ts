@@ -6,6 +6,8 @@ import fs from 'fs';
 import db from "./mongoose";
 import logger from "../utils/logger";
 import morgan from "morgan";
+import { CustomRoute } from '../../Interface/CustomRoute';
+import path from "path";
 
 export default class AppStartUtil{
 
@@ -35,10 +37,11 @@ export default class AppStartUtil{
 
     public includeModels = ():AppStartUtil => {
         // getting all models present in models folder
-        if(fs.existsSync(this.modelsPath)){
-            fs.readdirSync(this.modelsPath).forEach((file)=>{
+        let modelsPath:string = path.join(__dirname,this.modelsPath);
+        if(fs.existsSync(modelsPath)){
+            fs.readdirSync(modelsPath).forEach((file)=>{
                 if(~file.indexOf('js')){
-                    require(`${this.modelsPath}/${file}`)
+                    require(`${modelsPath}/${file}`)
                 }
             })
         }
@@ -47,11 +50,12 @@ export default class AppStartUtil{
 
     public includeRoutes = ():AppStartUtil => {
         // getting all routes present in routes folder
-        if(fs.existsSync(this.routesPath)){
-            fs.readdirSync(this.routesPath).forEach((file)=>{
+        let routesPath:string = path.join(__dirname,this.routesPath);
+        if(fs.existsSync(routesPath)){
+            fs.readdirSync(routesPath).forEach((file)=>{
                 if(~file.indexOf('.js')){
-                    let route = require(`${this.routesPath}/${file}`)
-                    route.setRouter(this.app)
+                    let route:CustomRoute = require(`${routesPath}/${file}`);
+                    route.init(this.app)
                 }
             })
         }

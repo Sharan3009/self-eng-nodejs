@@ -19,10 +19,6 @@ startup.useMorgan()
 
 const port:number = appConfig.get("port");
 
-app.get("/",(req:express.Request,res:express.Response)=>{
-    res.send("Hello world");
-})
-
 app.listen(port,()=>{
     logger.info(`Server is started at port:${port}`);
 })
