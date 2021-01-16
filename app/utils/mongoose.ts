@@ -1,6 +1,7 @@
 import dbConfig from '../../config/dbConfig';
 import mongoose, { Connection, ConnectOptions } from 'mongoose';
 import { DbEvents } from '../../Enums/DbEvents';
+import logger from "./logger";
 
 class Mongoose {
     
@@ -28,7 +29,7 @@ class Mongoose {
     private onDbConnect = ():void => {
         var event = DbEvents.con;
         this.moncon.on(event,()=>{
-            console.log(`${this.dbName} is connected at ${this.host}`);
+            logger.info(`${this.dbName} is connected at ${this.host}`);
         })
     }
 
