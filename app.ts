@@ -6,7 +6,7 @@ import { Server } from "http";
 import appConfig from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 import logger from "./app/utils/logger";
-import { AppSocket } from "./app/socket";
+import socket from "./app/socket";
 
 const app:express.Application = express();
 
@@ -28,4 +28,4 @@ const server:Server = app.listen(port,()=>{
 })
 
 //connect socket
-new AppSocket(server);
+socket(server);

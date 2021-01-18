@@ -1,19 +1,26 @@
 import { Server as Http } from "http";
 import { Server } from "socket.io";
+import e from "./connectionEvents";
 
-export class AppSocket {
+class AppSocket {
 
-    public static io:Server;
-    
-    constructor(server:Http){
-        this.connect(server);
-    }
+    private static io:Server;
 
-    private connect = (server:Http):void =>{
+    public connect = (server:Http):void =>{
+
         if(!AppSocket.io){
             AppSocket.io = new Server(server);
+            this.attachEvents();
         }
+    }
+
+    private attachEvents = ():void => {
+        this.onConnection();
+    }
+
+    private onConnection = ():void => {
+        e.onConnection(AppSocket.io);
     }
 }
 
-export default AppSocket.io;
+export default new AppSocket().connect;
