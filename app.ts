@@ -1,8 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config(); // this should be placed before everything because it is responsible for environment variables
+
 import express from 'express';
-require('dotenv').config(); // this should be placed before everything because it is responsible for environment variables
+import { Server } from "http";
 import appConfig from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 import logger from "./app/utils/logger";
+import { AppSocket } from "./app/socket";
 
 const app:express.Application = express();
 
@@ -19,6 +23,9 @@ startup.useMorgan()
 
 const port:number = appConfig.get("port");
 
-app.listen(port,()=>{
+const server:Server = app.listen(port,()=>{
     logger.info(`Server is started at port:${port}`);
 })
+
+//connect socket
+new AppSocket(server);
