@@ -9,7 +9,7 @@ export interface DictionaryConfig {
 }
 
 export interface DictAudio {
-    audios: AudioLang
+    pronunciations: AudioLang
 }
 
 export interface AudioLang {

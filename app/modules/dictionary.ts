@@ -58,7 +58,7 @@ class Dictionary {
 
 		const enAudios:Array<string> = [];
 		const audio:DictAudio = {
-			audios: {
+			pronunciations: {
 				en:enAudios
 			}
 		};
