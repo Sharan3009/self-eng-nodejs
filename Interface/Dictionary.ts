@@ -8,19 +8,20 @@ export interface DictionaryConfig {
     port: number
 }
 
-export interface DictAudio {
-    pronunciations: AudioLang
+export interface DictPhonetics {
+    phonetics: Array<DictPhonetic>
 }
 
-export interface AudioLang {
-    en: Array<string>
+export interface DictPhonetic {
+    text: string,
+    audio: string
 }
 
 export interface DictTitle {
     title: string
 }
 
-export interface DictData extends DictTitle,DictAudio {
+export interface DictData extends DictTitle,DictPhonetics {
    
 }
 

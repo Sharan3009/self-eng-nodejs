@@ -6,7 +6,7 @@ import { Executor } from "../../Interface/Executor";
 import logger from "../utils/logger";
 
 import d from "../../config/dictionaryConfig";
-import { DictAudio, DictResponse, DictTitle } from "../../Interface/Dictionary";
+import { DictPhonetic, DictPhonetics, DictResponse, DictTitle } from "../../Interface/Dictionary";
 
 class Dictionary {
 
@@ -54,19 +54,21 @@ class Dictionary {
 		}
 	}
 
-	private getAudios = ():DictAudio => {
+	private getAudios = ():DictPhonetics => {
 
-		const enAudios:Array<string> = [];
-		const audio:DictAudio = {
-			pronunciations: {
-				en:enAudios
-			}
+		const arr:Array<DictPhonetic> = [];
+		const audio:DictPhonetics = {
+			phonetics: arr
 		};
 
 		this.$(".pronunciations audio").each((i:number,ele:cheerio.Element)=>{
 			let val:string|undefined = this.$(ele).attr("src");
 			if(val){
-				enAudios.push(val);
+				let phonetic:DictPhonetic = {
+					text:"",
+					audio:val
+				}
+				arr.push(phonetic);
 			}
 		});
 		return audio;
