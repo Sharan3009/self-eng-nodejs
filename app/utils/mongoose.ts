@@ -19,7 +19,7 @@ class Mongoose {
     }
 
     public connect = ():void => {
-        var options:ConnectOptions = {
+        let options:ConnectOptions = {
             useNewUrlParser:true,
             useUnifiedTopology:true
         }
@@ -27,28 +27,28 @@ class Mongoose {
     }
 
     private onDbConnect = ():void => {
-        var event = DbEvents.con;
+        let event = DbEvents.con;
         this.moncon.on(event,()=>{
             logger.info(`${this.dbName} is connected at ${this.host}`);
         })
     }
 
     private onDbDisconnect = ():void => {
-        var event = DbEvents.discon;
+        let event = DbEvents.discon;
         this.moncon.on(event,function(){
             // do nothing yet
         })
     }
 
     private onDbError = ():void => {
-        var event = DbEvents.err;
+        let event = DbEvents.err;
         this.moncon.on(event,function(){
             process.exit(0);
         })
     }
 
     private onNodeProcessEnd = ():void => {
-        var event = DbEvents.processEnd;
+        let event = DbEvents.processEnd;
         process.on(event,()=>{
             this.moncon.close();
             // if we do no exit the process, then the port stays occupied

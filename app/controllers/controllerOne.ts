@@ -6,8 +6,11 @@ import dictionary from "../modules/dictionary";
 // change any to usefull iterface and remove the comment.
 const ModelOne:Model<any> = mongoose.model("ModelOne");
 
-export let funcOne = async (req:Request,res:Response):Promise<void> => {
+export let funcOne = (req:Request,res:Response):void => {
     const word:string = <string>req.query.word;
-    const resp:DictResponse= await dictionary.define(word)
-    res.send(resp);
+    dictionary.define(word).then((val:DictResponse)=>{
+        res.send(val)
+    }).catch((reason:DictResponse)=>{
+        res.send(reason);
+    })
 }

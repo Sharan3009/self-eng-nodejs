@@ -12,13 +12,22 @@ class Dictionary {
 
 	private userAgentKey:string = "User-Agent";
 	private $:cheerio.Root;
+	private word:string;
 
 	public define = (word:string):Promise<DictResponse> => {
 
-		return new Promise<DictResponse>((resolve:Executor<DictResponse>,reject:Executor<string>)=>{
-			this.getPage(word).then((resp:string)=>{
+		this.word = word;
+		return new Promise<DictResponse>((resolve:Executor<DictResponse>,reject:Executor<DictResponse>)=>{
+			this.getPage().then((resp:string)=>{
+
 				this.$ = cheerio.load(resp);
-				resolve(this.scrapData());
+				const data:DictResponse = this.scrapData();
+				if(data.status==='success'){
+					resolve(data);
+				} else {
+					reject(data);
+				}
+				
 			}).catch((reason:string)=>{
 				logger.error(reason);
 			})
@@ -27,9 +36,21 @@ class Dictionary {
 	}
 
 	private scrapData = ():DictResponse => {
+
+		let obj:DictTitle = this.getTitle();
+
+		if(obj.title){
+			return {
+				status:"success",
+				data: {
+					...obj,
+					...this.getAudios()
+				}
+			}
+		}
 		return {
-			...this.getAudios(),
-			...this.getTitle()
+			status:"error",
+			message:`No match found for the word '${this.word}'`
 		}
 	}
 
@@ -53,18 +74,18 @@ class Dictionary {
 	}
 
 	private getTitle = ():DictTitle => {
+
 		const obj:DictTitle = {
 			title: ""
 		}
 
 		obj.title = this.$(".hwg .hw").text();
-
 		return obj;
 	}
 
-	private getPage = (word:string):Promise<any> => {
+	private getPage = ():Promise<any> => {
 
-		const path = `/${d.lang}${d.path}${word}`;
+		const path = `/${d.lang}${d.path}${this.word}`;
 
 		const reqOpts:RequestOptions = {
 			hostname:d.hostname,

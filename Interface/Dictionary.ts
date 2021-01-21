@@ -1,3 +1,5 @@
+import { ErrorResponse, SuccessResponse } from "./Response";
+
 export interface DictionaryConfig {
     userAgent:string,
     hostname:string,
@@ -18,6 +20,8 @@ export interface DictTitle {
     title: string
 }
 
-export interface DictResponse extends DictTitle,DictAudio {
+export interface DictData extends DictTitle,DictAudio {
    
 }
+
+export type DictResponse = SuccessResponse<DictData> | ErrorResponse;
