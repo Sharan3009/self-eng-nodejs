@@ -21,7 +21,23 @@ export interface DictTitle {
     title: string
 }
 
-export interface DictData extends DictTitle,DictPhonetics {
+export interface DictMeanings {
+    meanings: Array<DictDefinition>
+}
+
+export interface DictDefinition {
+    partOfSpeech: string,
+    definitions: Array<DictMeaning>
+}
+
+export interface DictMeaning {
+    meaning: string,
+    usage?: string,
+    synonyms?: Array<string>,
+    antonyms?: Array<string>
+}
+
+export interface DictData extends DictTitle,DictPhonetics,DictMeanings {
    
 }
 
