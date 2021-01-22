@@ -11,8 +11,8 @@ class Translate {
     public initiate = async ():Promise<any> =>{
         const browser:puppeteer.Browser = await puppeteer.launch();
         this.page = await browser.newPage();
-        this.page.setUserAgent(w.userAgent);
-        this.page.goto(t.hostname,{waitUntil: 'networkidle2'});
+        await this.page.setUserAgent(w.userAgent);
+        return await this.page.goto(t.hostname,{waitUntil: 'networkidle2'});
     }
 
     public translate = async (text:string,lang:string):Promise<any> => {

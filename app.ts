@@ -25,7 +25,10 @@ startup.useMorgan()
 const port:number = appConfig.get("port");
 
 (async () =>{
+
+    logger.info("Starting the puppeteer");
     await translator.initiate();
+    logger.info("Puppeteer is started");
     const server:Server = app.listen(port,()=>{
         logger.info(`Server is started at port:${port}`);
     })
