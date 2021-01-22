@@ -61,15 +61,22 @@ class Dictionary {
 			phonetics: arr
 		};
 
-		this.$(".pronunciations audio").each((i:number,ele:cheerio.Element)=>{
-			let val:string|undefined = this.$(ele).attr("src");
-			if(val){
-				let phonetic:DictPhonetic = {
-					text:"",
-					audio:val
+		this.$(".pronunciations .phoneticspelling").each((i:number,ele:cheerio.Element)=>{
+			
+			let text:string = this.$(ele).text();
+			let audio: cheerio.Cheerio = this.$(ele).next("a.speaker");
+
+			if(audio.length){
+				let src:string|undefined = audio.children("audio:first-child").attr("src");
+				if(src){
+					let phonetic:DictPhonetic = {
+						text: text || "",
+						audio:src
+					}
+					arr.push(phonetic);
 				}
-				arr.push(phonetic);
 			}
+
 		});
 		return audio;
 
