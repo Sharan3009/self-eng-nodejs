@@ -1,24 +1,26 @@
 
-import {IncomingMessage} from "http";
-import https,{RequestOptions} from "https";
 import cheerio from "cheerio";
 import { Executor } from "../../Interface/Executor";
 import logger from "../utils/logger";
 
-import d from "../../config/dictionaryConfig";
+import {definitionConfig as d} from "../../config/dictionaryConfig";
 import { DictDefinition, DictMeaning, DictMeanings, DictPhonetic, DictPhonetics, DictResponse, DictTitle } from "../../Interface/Dictionary";
+import { FetchPage } from "../../Class/FetchPage";
 
-class Dictionary {
+class Dictionary extends FetchPage {
 
-	private userAgentKey:string = "User-Agent";
 	private $:cheerio.Root;
 	private word:string;
+	private lang:string = "en";
 
 	public define = (word:string):Promise<DictResponse> => {
 
 		this.word = word;
 		return new Promise<DictResponse>((resolve:Executor<DictResponse>,reject:Executor<DictResponse>)=>{
-			this.getPage().then((resp:string)=>{
+
+			const path = `/${this.lang}${d.path}${this.word}`;
+
+			this.getPage(d.hostname,path).then((resp:string)=>{
 
 				this.$ = cheerio.load(resp);
 				const data:DictResponse = this.scrapData();
@@ -165,36 +167,6 @@ class Dictionary {
 		return obj;
 	}
 
-	private getPage = ():Promise<any> => {
-
-		const path = `/${d.lang}${d.path}${this.word}`;
-
-		const reqOpts:RequestOptions = {
-			hostname:d.hostname,
-			port:d.port,
-			path:path,
-			headers : {
-				[this.userAgentKey]:d.userAgent
-			}
-		}
-		return new Promise<any>((resolve:Executor<any>,reject:Executor<any>)=>{
-			https.get(reqOpts,(res:IncomingMessage)=>{
-				let html:string = '';
-  
-				res.on('data', (chunk:string) => {
-					html += chunk;
-				});
-		
-				res.on('end', () => {
-					resolve(html);
-				});
-
-				res.on("error",(err:Error)=>{
-					reject(err.message);
-				})
-			});
-		})
-	}
 }
 
 export default new Dictionary();

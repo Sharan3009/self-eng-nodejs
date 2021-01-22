@@ -1,11 +1,13 @@
 import { ErrorResponse, SuccessResponse } from "./Response";
 
-export interface DictionaryConfig {
+export interface WebSiteConfig {
     userAgent:string,
-    hostname:string,
-    lang:string,
-    path:string,
     port: number
+}
+
+export interface DictionaryConfig {
+    hostname:string,
+    path:string,
 }
 
 export interface DictPhonetics {
