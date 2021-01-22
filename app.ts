@@ -7,6 +7,7 @@ import appConfig from './config/appConfig';
 import AppStartUtil from './app/utils/appStartUtil';
 import logger from "./app/utils/logger";
 import socket from "./app/socket";
+import translator from "./app/modules/translator";
 
 const app:express.Application = express();
 
@@ -23,9 +24,12 @@ startup.useMorgan()
 
 const port:number = appConfig.get("port");
 
-const server:Server = app.listen(port,()=>{
-    logger.info(`Server is started at port:${port}`);
-})
-
-//connect socket
-socket(server);
+(async () =>{
+    await translator.initiate();
+    const server:Server = app.listen(port,()=>{
+        logger.info(`Server is started at port:${port}`);
+    })
+    
+    //connect socket
+    socket(server);
+})();

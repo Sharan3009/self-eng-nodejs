@@ -11,6 +11,6 @@ export const definitionConfig:DictionaryConfig = {
 }
 
 export const translationConfig: DictionaryConfig = {
-    hostname: "www.translatedict.com",
+    hostname: "https://www.translatedict.com",
     path: ""
 }
