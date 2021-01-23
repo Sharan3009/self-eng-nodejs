@@ -1,6 +1,6 @@
 export interface AppConfig {
-    env: string;
-    allowedCorsOrigin: string;
-    port: number;
+    NODE_ENV: string;
+    ALLOWED_CORS_ORIGIN: string;
+    PORT: number;
     apiVersion: string;
 }

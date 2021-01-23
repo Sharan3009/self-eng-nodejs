@@ -22,7 +22,7 @@ startup.useMorgan()
 .includeRoutes()
 .connectDB();
 
-const port:number = appConfig.get("port");
+const port:number = appConfig.get("PORT");
 
 (async () =>{
 

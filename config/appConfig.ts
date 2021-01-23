@@ -5,17 +5,17 @@ import { AppConfig } from "../Interface/AppConfig";
 import convict from "convict";
 
 const config:convict.Config<AppConfig> = convict({
-    env:{
+    NODE_ENV:{
         format: Object.values(Environment),
         env: "NODE_ENV",
         default: ""
     },
-    allowedCorsOrigin:{
+    ALLOWED_CORS_ORIGIN:{
         format: Object.values(Cors),
         env: "ALLOWED_CORS_ORIGIN",
         default: ""
     },
-    port:{
+    PORT:{
         format: "port",
         env: "PORT",
         default: -1
