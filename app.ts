@@ -21,7 +21,7 @@ startup.useMorgan()
 .includeRoutes()
 .connectDB();
 
-const port:number = appConfig.get("port");
+const port:number = appConfig.get("PORT");
 
 const server:Server = app.listen(port,()=>{
     logger.info(`Server is started at port:${port}`);

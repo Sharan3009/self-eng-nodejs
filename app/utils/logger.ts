@@ -28,7 +28,7 @@ class CustonLogger {
     }
 
     private initiateLogger = ():void =>{
-        if(appConfig.get("env")===Environment.dev){
+        if(appConfig.get("NODE_ENV")===Environment.dev){
             this.devLogger();
         } else {
             this.prodLogger();
