@@ -8,6 +8,7 @@ import AppStartUtil from './app/utils/appStartUtil';
 import logger from "./app/utils/logger";
 import socket from "./app/socket";
 import translator from "./app/modules/translator";
+import { Environment } from "./Enums/Environment";
 
 const app:express.Application = express();
 
@@ -27,10 +28,11 @@ startup.useMorgan()
 const port:number = appConfig.get("PORT");
 
 (async () =>{
-
-    logger.info("Starting the puppeteer");
-    await translator.initiate();
-    logger.info("Puppeteer is started");
+    if(appConfig.get("NODE_ENV")!==Environment.dev){
+        logger.info("Starting the puppeteer");
+        await translator.initiate();
+        logger.info("Puppeteer is started");
+    }
     const server:Server = app.listen(port,()=>{
         logger.info(`Server is started at port:${port}`);
     })
