@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import mongoose,{ Model } from "mongoose";
-import passport, { PassportStatic, Profile } from "passport";
+import passport, { Profile } from "passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
 import googleConfig from "../../config/googleAuthConfig";
 import appConfig from "../../config/appConfig";
@@ -10,15 +10,20 @@ const ModelOne:Model<any> = mongoose.model("ModelOne");
 let apiVersion:string = appConfig.get("apiVersion");
 
 export let authorizeSuccess = (req:Request,res:Response):void => {
-    res.send({"token":req.cookies.authToken});
+    const user:Profile = <Profile>req.user;
+    if(user && user.id){
+        res.send(`<title>custom_msg - success - ${req.cookies.authToken}</title>`)
+    } else {
+        res.redirect(apiVersion+"google/failed");
+    }
 }
 
 export let authorizeFailed = (req:Request,res:Response):void => {
     const user:Profile = <Profile>req.user;
-    if(user.id){
-        authorizeCallback(req,res);
+    if(user && user.id){
+        res.redirect(apiVersion+"google/success");
     } else {
-        res.send("Something went wrong");
+        res.send(`<title>custom_msg - failed</title>`);
     }
 }
 
