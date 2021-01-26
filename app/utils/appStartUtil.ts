@@ -8,6 +8,7 @@ import logger from "../utils/logger";
 import morgan from "morgan";
 import { CustomRoute } from '../../Interface/CustomRoute';
 import path from "path";
+import passport from "passport";
 
 export default class AppStartUtil{
 
@@ -78,6 +79,11 @@ export default class AppStartUtil{
 
     public connectDB = ():AppStartUtil => {
         db.connect();
+        return this;
+    }
+
+    public usePassport = ():AppStartUtil => {
+        this.app.use(passport.initialize());
         return this;
     }
 }

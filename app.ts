@@ -18,9 +18,10 @@ startup.useMorgan()
 .useBodyParser()
 .useCookieParser()
 .useHelmet()
+.connectDB()
+.usePassport()
 .includeModels()
-.includeRoutes()
-.connectDB();
+.includeRoutes();
 
 const port:number = appConfig.get("PORT");
 
