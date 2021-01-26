@@ -1,4 +1,4 @@
-import {Application} from 'express';
+import { Application } from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -9,6 +9,7 @@ import morgan from "morgan";
 import { CustomRoute } from '../../Interface/CustomRoute';
 import path from "path";
 import passport from "passport";
+import session from "cookie-session";
 
 export default class AppStartUtil{
 
@@ -82,8 +83,16 @@ export default class AppStartUtil{
         return this;
     }
 
+    public useExpressSession = ():AppStartUtil => {
+        this.app.use(session({
+            name:"authToken"
+        }))
+        return this;
+    }
+
     public usePassport = ():AppStartUtil => {
         this.app.use(passport.initialize());
+        this.app.use(passport.session());
         return this;
     }
 }

@@ -19,6 +19,7 @@ startup.useMorgan()
 .useCookieParser()
 .useHelmet()
 .connectDB()
+.useExpressSession()
 .usePassport()
 .includeModels()
 .includeRoutes();
