@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import mongoose,{ Model } from "mongoose";
-import passport, { Profile } from "passport";
+import passport, { PassportStatic, Profile } from "passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
 import googleConfig from "../../config/googleAuthConfig";
 import appConfig from "../../config/appConfig";
@@ -14,7 +14,12 @@ export let authorizeSuccess = (req:Request,res:Response):void => {
 }
 
 export let authorizeFailed = (req:Request,res:Response):void => {
-    res.send("Something went wrong");
+    const user:Profile = <Profile>req.user;
+    if(user.id){
+        authorizeCallback(req,res);
+    } else {
+        res.send("Something went wrong");
+    }
 }
 
 export let authorizeCallback = (req:Request,res:Response):void=>{
