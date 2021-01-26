@@ -10,7 +10,7 @@ const ModelOne:Model<any> = mongoose.model("ModelOne");
 let apiVersion:string = appConfig.get("apiVersion");
 
 export let authorizeSuccess = (req:Request,res:Response):void => {
-    res.send(req.user);
+    res.send({"token":req.cookies.authToken});
 }
 
 export let authorizeFailed = (req:Request,res:Response):void => {
@@ -38,7 +38,12 @@ const configPassport = ():void => {
 }
 
 const passportCallback = (accessToken:string,refreshToken:string,profile:Profile,done:VerifyCallback):void=>{
-    return done(undefined, profile);
+    const obj:any = {
+        id: profile.id,
+        displayName: profile.displayName,
+        provider: profile.provider
+    }
+    return done(undefined,obj);
 }
 
 const serializeUser = ():void => {
