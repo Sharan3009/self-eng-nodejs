@@ -6,7 +6,7 @@ import googleConfig from "../../config/googleAuthConfig";
 import appConfig from "../../config/appConfig";
 
 // change any to usefull iterface and remove the comment.
-const ModelOne:Model<any> = mongoose.model("ModelOne");
+const User:Model<any> = mongoose.model("User");
 let apiVersion:string = appConfig.get("apiVersion");
 
 export let authorizeSuccess = (req:Request,res:Response):void => {
