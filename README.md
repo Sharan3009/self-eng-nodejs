@@ -4,7 +4,7 @@
 # Initial Setup
 ### package.json
 - `npm init`. Entry point is app.ts
-- add the script `"start":"tsc && node dist/app.js"`
+- add the script `"build":"tsc && node dist/app.js"`
 
 ### Typescript
 - `npm i -D typescript`
