@@ -1,0 +1,23 @@
+import { Application } from "express";
+import { CustomRoute } from "../../Interface/CustomRoute";
+import appConfig from "../../config/appConfig";
+import { HttpMethods } from "../../Class/HttpMethods";
+import { signup } from "../controllers/userController";
+
+class GoogleAuthRoute extends HttpMethods implements CustomRoute{
+
+    private static apiVersion:string = appConfig.get("apiVersion");
+    private static subRoute:string = "user";
+
+    constructor(){
+        super(GoogleAuthRoute.apiVersion,GoogleAuthRoute.subRoute);
+    }
+
+    public init = (app:Application):void =>{
+
+       this.post(app,"signup",signup);
+       
+    }
+}
+
+module.exports = new GoogleAuthRoute();

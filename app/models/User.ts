@@ -1,5 +1,6 @@
 'use strict'
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { User } from '../../Interface/mongoose/User';
 
 let users: Schema = new Schema({
     
@@ -9,14 +10,16 @@ let users: Schema = new Schema({
         index: true,
         unique: true
     },
-    displayName: {
+    name: {
         type: String,
         required: true
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index:true,
+        uniqueCaseInsensitive: true
     },
     password: {
         type: String,
@@ -33,5 +36,4 @@ let users: Schema = new Schema({
     
 })
 
-
-mongoose.model('User', users);
+export default model<User>('User', users);
