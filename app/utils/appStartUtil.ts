@@ -42,7 +42,7 @@ export default class AppStartUtil{
         let modelsPath:string = path.join(__dirname,this.modelsPath);
         if(fs.existsSync(modelsPath)){
             fs.readdirSync(modelsPath).forEach((file)=>{
-                if(~file.indexOf('js')){
+                if(this.ifValidFile(file)){
                     require(`${modelsPath}/${file}`)
                 }
             })
@@ -55,13 +55,17 @@ export default class AppStartUtil{
         let routesPath:string = path.join(__dirname,this.routesPath);
         if(fs.existsSync(routesPath)){
             fs.readdirSync(routesPath).forEach((file)=>{
-                if(~file.indexOf('.js')){
+                if(this.ifValidFile(file)){
                     let route:CustomRoute = require(`${routesPath}/${file}`);
                     route.init(this.app)
                 }
             })
         }
         return this;
+    }
+
+    private ifValidFile = (file:string):boolean => {
+        return /(\.ts|\.js)$/.test(file)
     }
 
     public useMorgan = ():AppStartUtil => {
