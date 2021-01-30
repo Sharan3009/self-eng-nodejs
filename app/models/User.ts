@@ -19,6 +19,7 @@ let users: Schema = new Schema({
         required: true,
         unique: true,
         index:true,
+        lowercase:true
     },
     password: {
         type: String,

@@ -6,15 +6,6 @@ class Validation {
         return regex.test(email);
         
     }
-
-    public transformEmail = (email:string):string => {
-
-        if(email){
-            return email.toLowerCase();
-        }
-
-        return email;
-    }
 }
 
 export default new Validation();

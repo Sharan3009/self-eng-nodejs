@@ -11,19 +11,11 @@ import passUtil from "../utils/passwordUtil";
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
     try{
-
         let { name, email, password } = req.body;
-
         validateSignupParams(name,email,password);
-
-        email = validation.transformEmail(email);
-
         password = await passUtil.hash(password);
-
         await ifEmailNotRegistered(email);
-
         await registerUser(name,email,password);
-
         const resp:SuccessResponse<string> = response.success("Registration successful");
         res.send(resp);
 
@@ -66,7 +58,6 @@ export const login = async (req:Request, res:Response):Promise<any> => {
     try{
         let { email, password } = req.body;
         validateLoginParams(email,password);
-        email = (email as String).toLowerCase();
         await ifValidUser(email,password);
         const resp:SuccessResponse<string> = response.success("Login successful");
         res.send(resp);
