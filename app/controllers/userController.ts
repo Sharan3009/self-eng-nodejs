@@ -64,7 +64,7 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         let { email, password } = req.body;
         validateLoginParams(email,password);
         email = (email as String).toLowerCase();
-        await ifEmailExists(email);
+        await ifValidUser(email);
         const resp:SuccessResponse<string> = response.success("Login successful");
         res.send(resp);
     } catch (e){
@@ -82,9 +82,11 @@ const validateLoginParams = (email:string,password:string):void => {
     }
 }
 
-const ifEmailExists = async (email:string):Promise<any> => {
+const ifValidUser = async (email:string):Promise<any> => {
     const user:User|null = await UserModel.findOne({email});
     if(!user){
         throw new CustomError("Email is not registered");
+    } else if(user.verified){
+        throw new CustomError("Email is not verified");
     }
 }
