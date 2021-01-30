@@ -17,7 +17,7 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
 
         email = validation.transformEmail(email);
 
-        await ifEmailNotRegisterd(email);
+        await ifEmailNotRegistered(email);
 
         await registerUser(name,email,password);
 
@@ -33,16 +33,16 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
 
 const validateSignupParams = (name:string, email:string, password:string):void => {
     if(!name || !email || !password){
-        throw new CustomError("All fields are required");
+        throw new CustomError("Some required fiels are not provided");
     } else if(!validation.email(email)){
         throw new CustomError("Invalid email");
     }
 }
 
-const ifEmailNotRegisterd = async (email:string):Promise<any> =>{
+const ifEmailNotRegistered = async (email:string):Promise<any> =>{
     const user:User|null = await UserModel.findOne({email});
     if(user){
-        throw new CustomError("Email is already registerd");
+        throw new CustomError("Email is already registered");
     }
 }
 
