@@ -6,6 +6,7 @@ import UserModel from "../models/User";
 import { v4 } from "uuid";
 import response from "../utils/response";
 import validation from "../utils/validation";
+import passUtil from "../utils/passwordUtil";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -16,6 +17,8 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
         validateSignupParams(name,email,password);
 
         email = validation.transformEmail(email);
+
+        password = await passUtil.hash(password);
 
         await ifEmailNotRegistered(email);
 
@@ -64,7 +67,7 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         let { email, password } = req.body;
         validateLoginParams(email,password);
         email = (email as String).toLowerCase();
-        await ifValidUser(email);
+        await ifValidUser(email,password);
         const resp:SuccessResponse<string> = response.success("Login successful");
         res.send(resp);
     } catch (e){
@@ -82,11 +85,13 @@ const validateLoginParams = (email:string,password:string):void => {
     }
 }
 
-const ifValidUser = async (email:string):Promise<any> => {
+const ifValidUser = async (email:string,password:string):Promise<any> => {
     const user:User|null = await UserModel.findOne({email});
     if(!user){
         throw new CustomError("Email is not registered");
     } else if(user.verified){
         throw new CustomError("Email is not verified");
+    } else if(!await passUtil.compare(password,user.password)){
+        throw new CustomError("Incorrect password");
     }
 }
