@@ -61,8 +61,8 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         validateLoginParams(email,password);
         const user:User = await ifValidUser(email,password);
         const {id,name} = user;
-        const token = await jwt.sign({id,name,email});
-        const resp:SuccessResponse<void> = response.success(token);
+        const token:string = await jwt.sign({id,name,email});
+        const resp:SuccessResponse<string> = response.success(token);
         res.send(resp);
     } catch (e){
         const resp: ErrorResponse = response.errorHandle(e);
