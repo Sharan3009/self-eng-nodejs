@@ -3,3 +3,7 @@ export interface GoogleAuthConfig{
     clientSecret: string,
     callbackURL:string
 }
+
+export interface JWTConfig{
+    jwtSecret:string
+}

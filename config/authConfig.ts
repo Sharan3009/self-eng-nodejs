@@ -1,8 +1,8 @@
-import { GoogleAuthConfig } from "../Interface/GoogleAuth";
+import { GoogleAuthConfig, JWTConfig } from "../Interface/Auth";
 import convict from "convict";
 import appConfig from "./appConfig";
 
-const config:convict.Config<GoogleAuthConfig> = convict({
+const config:convict.Config<GoogleAuthConfig & JWTConfig> = convict({
     clientId:{
         format: function(val){
             if (!val) throw new Error("GOOGLE_CLIENT_ID cannot be empty");
@@ -19,7 +19,14 @@ const config:convict.Config<GoogleAuthConfig> = convict({
     },
     callbackURL:{
         default: appConfig.get("apiVersion")+"google/callback"
-    }
+    },
+    jwtSecret:{
+        format: function(val){
+            if (!val) throw new Error("JWT_SECRET cannot be empty and should be complex");
+        },
+        env: "JWT_SECRET",
+        default:"this-is@my&very(long&complex)secret!key*that%ICANTHINKOF"
+    },
 })
 
 config.validate();

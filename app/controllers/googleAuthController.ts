@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import mongoose,{ Model } from "mongoose";
 import passport, { Profile } from "passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
-import googleConfig from "../../config/googleAuthConfig";
+import authConfig from "../../config/authConfig";
 import appConfig from "../../config/appConfig";
 
 // change any to usefull iterface and remove the comment.
@@ -34,9 +34,9 @@ export let authorizeCallback = (req:Request,res:Response):void=>{
 const configPassport = ():void => {
     passport.use(new Strategy(
         {
-            clientID: googleConfig.get("clientId"),
-            clientSecret: googleConfig.get("clientSecret"),
-            callbackURL: googleConfig.get("callbackURL")
+            clientID: authConfig.get("clientId"),
+            clientSecret: authConfig.get("clientSecret"),
+            callbackURL: authConfig.get("callbackURL")
         },
         passportCallback
     ))
