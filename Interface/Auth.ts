@@ -5,5 +5,6 @@ export interface GoogleAuthConfig{
 }
 
 export interface JWTConfig{
-    jwtSecret:string
+    jwtSecret:string,
+    jwtExpiresIn:string
 }

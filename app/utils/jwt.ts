@@ -11,7 +11,7 @@ class JWT {
         
         const signAsync = promisify<any,Secret,SignOptions>(sign);
         try {
-            const token:void = await signAsync(payload,this.secret,{expiresIn:'0s'});
+            const token:void = await signAsync(payload,this.secret,{expiresIn:config.get("jwtExpiresIn")});
             const typeCastedToken:string = <string>(<unknown>token);
             return typeCastedToken;
         } catch (e){

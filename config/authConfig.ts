@@ -27,6 +27,9 @@ const config:convict.Config<GoogleAuthConfig & JWTConfig> = convict({
         env: "JWT_SECRET",
         default:"this-is@my&very(long&complex)secret!key*that%ICANTHINKOF"
     },
+    jwtExpiresIn: {
+        default:"1d"
+    }
 })
 
 config.validate();
