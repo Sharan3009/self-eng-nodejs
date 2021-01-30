@@ -7,6 +7,7 @@ import { v4 } from "uuid";
 import response from "../utils/response";
 import validation from "../utils/validation";
 import passUtil from "../utils/passwordUtil";
+import jwt from "../utils/jwt";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -58,8 +59,10 @@ export const login = async (req:Request, res:Response):Promise<any> => {
     try{
         let { email, password } = req.body;
         validateLoginParams(email,password);
-        await ifValidUser(email,password);
-        const resp:SuccessResponse<string> = response.success("Login successful");
+        const user:User = await ifValidUser(email,password);
+        const {id,name} = user;
+        const token = await jwt.sign({id,name,email});
+        const resp:SuccessResponse<void> = response.success(token);
         res.send(resp);
     } catch (e){
         const resp: ErrorResponse = response.errorHandle(e);
@@ -85,4 +88,5 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
     } else if(!await passUtil.compare(password,user.password)){
         throw new CustomError("Incorrect password");
     }
+    return user;
 }
