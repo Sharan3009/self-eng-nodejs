@@ -26,7 +26,7 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
 
     } catch (e){
         const resp: ErrorResponse = response.errorHandle(e);
-        res.send(resp);
+        res.status(400).send(resp);
     }
     
 }
@@ -69,7 +69,7 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         res.send(resp);
     } catch (e){
         const resp: ErrorResponse = response.errorHandle(e);
-        res.send(resp);
+        res.status(400).send(resp);
     }
 
 }
