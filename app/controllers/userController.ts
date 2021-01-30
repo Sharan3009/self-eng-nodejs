@@ -5,8 +5,7 @@ import { User } from "../../Interface/mongoose/User";
 import UserModel from "../models/User";
 import { v4 } from "uuid";
 import response from "../utils/response";
-
-const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import validation from "../utils/validation";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -14,28 +13,14 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
 
         let { name, email, password } = req.body;
 
-        if(!name || !email || !password){
-            throw new CustomError("All fields are required");
-        } else if(!emailRegex.test(email)){
-            throw new CustomError("Invalid email");
-        }
+        validateSignupParams(name,email,password);
 
-        email = (email as String).toLowerCase();
+        email = validation.transformEmail(email);
 
-        const user:User|null = await UserModel.findOne({email});
+        await ifEmailNotRegisterd(email);
 
-        if(user){
-            throw new CustomError("Email is already registerd");
-        }
+        await registerUser(name,email,password);
 
-        const newUser:User = new UserModel({
-            userId: v4(),
-            name,
-            email,
-            password
-        });
-
-        await newUser.save();
         const resp:SuccessResponse<string> = response.success("Registration successful");
         res.send(resp);
 
@@ -46,14 +31,60 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
     
 }
 
-export const login = (req:Request, res:Response) => {
-    const { email, password } = req.body;
+const validateSignupParams = (name:string, email:string, password:string):void => {
+    if(!name || !email || !password){
+        throw new CustomError("All fields are required");
+    } else if(!validation.email(email)){
+        throw new CustomError("Invalid email");
+    }
+}
 
-    if(!email || !password){
-        throw new Error("Both email and password are required");
-    } else if(!emailRegex.test(email)){
-        throw new Error("Invalid email");
+const ifEmailNotRegisterd = async (email:string):Promise<any> =>{
+    const user:User|null = await UserModel.findOne({email});
+    if(user){
+        throw new CustomError("Email is already registerd");
+    }
+}
+
+const registerUser = async (name:string,email:string,password:string):Promise<any> => {
+
+    const newUser:User = new UserModel({
+        userId: v4(),
+        name,
+        email,
+        password
+    });
+
+    await newUser.save();
+}
+
+export const login = async (req:Request, res:Response):Promise<any> => {
+
+    try{
+        let { email, password } = req.body;
+        validateLoginParams(email,password);
+        email = (email as String).toLowerCase();
+        await ifEmailExists(email);
+        const resp:SuccessResponse<string> = response.success("Login successful");
+        res.send(resp);
+    } catch (e){
+        const resp: ErrorResponse = response.errorHandle(e);
+        res.send(resp);
     }
 
-    
+}
+
+const validateLoginParams = (email:string,password:string):void => {
+    if(!email || !password){
+        throw new CustomError("Both Email and Password are required");
+    } else if(!validation.email(email)){
+        throw new CustomError("Invalid email");
+    }
+}
+
+const ifEmailExists = async (email:string):Promise<any> => {
+    const user:User|null = await UserModel.findOne({email});
+    if(!user){
+        throw new CustomError("Email is not registered");
+    }
 }

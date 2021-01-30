@@ -2,7 +2,7 @@ import { Application } from "express";
 import { CustomRoute } from "../../Interface/CustomRoute";
 import appConfig from "../../config/appConfig";
 import { HttpMethods } from "../../Class/HttpMethods";
-import { signup } from "../controllers/userController";
+import { signup, login } from "../controllers/userController";
 
 class GoogleAuthRoute extends HttpMethods implements CustomRoute{
 
@@ -16,6 +16,8 @@ class GoogleAuthRoute extends HttpMethods implements CustomRoute{
     public init = (app:Application):void =>{
 
        this.post(app,"signup",signup);
+
+       this.post(app,"login",login);
        
     }
 }
