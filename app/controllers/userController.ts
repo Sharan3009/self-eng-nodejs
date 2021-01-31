@@ -8,6 +8,7 @@ import response from "../utils/response";
 import validation from "../utils/validation";
 import passUtil from "../utils/passwordUtil";
 import jwt from "../utils/jwt";
+import userConfig from "../../config/userConfig";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -28,15 +29,14 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
 }
 
 const validateSignupParams = (name:string, email:string, password:string, confirmPassword:string):void => {
-   let nameLength = 20;
-   let passwordLength = 8; 
+   const { maxNameLength, minPasswordLength } = userConfig;
    let error:string = "";
     if(!name || !email || !password || !confirmPassword){
         error = "Some required fiels are not provided";
-    } else if(name.length>nameLength){
-        error = `Name cannot be more than ${nameLength} characters`;
-    } else if(password.length<passwordLength){
-        error = `Password must be atleast ${passwordLength} characters long`;
+    } else if(validation.username(name)){
+        error = `Name cannot be more than ${maxNameLength} characters`;
+    } else if(validation.password(password)){
+        error = `Password must be atleast ${minPasswordLength} characters long`;
     } else if(!validation.email(email)){
         error = "Invalid email";
     } else if(password!==confirmPassword){

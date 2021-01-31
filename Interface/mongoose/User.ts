@@ -10,3 +10,8 @@ export interface User extends Document {
     verified:boolean,
     createdOn:Date
 }
+
+export interface UserValidConfig {
+    maxNameLength: number,
+    minPasswordLength:number
+}

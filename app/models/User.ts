@@ -4,6 +4,7 @@ import { User } from '../../Interface/mongoose/User';
 import { SocialProviders } from '../../Enums/Social';
 import config from "../../config/appConfig";
 import { Environment } from '../../Enums/Environment';
+import userConfig from "../../config/userConfig";
 
 let users: Schema = new Schema({
     
@@ -15,7 +16,8 @@ let users: Schema = new Schema({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        maxlength: userConfig.maxNameLength
     },
     email: {
         type: String,
@@ -29,6 +31,10 @@ let users: Schema = new Schema({
         required: [
             function(this:User){ return !this.socialLogin.length },
             `Password is required if socialLogin is not provided`
+        ],
+        minlength: [
+            function(this:User){ return (!this.socialLogin.length)?userConfig.minPasswordLength:null},
+            `Password must be atleast ${userConfig.minPasswordLength} characters long`
         ]
     },
     socialLogin:{
