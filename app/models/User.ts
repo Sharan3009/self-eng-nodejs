@@ -2,6 +2,8 @@
 import { Schema, model } from 'mongoose';
 import { User } from '../../Interface/mongoose/User';
 import { SocialProviders } from '../../Enums/Social';
+import config from "../../config/appConfig";
+import { Environment } from '../../Enums/Environment';
 
 let users: Schema = new Schema({
     
@@ -41,7 +43,7 @@ let users: Schema = new Schema({
     },
     verified: {
         type: Boolean,
-        default: false
+        default: (config.get("NODE_ENV")===Environment.dev)?true:false
     },
     createdOn: {
         type: Date,
