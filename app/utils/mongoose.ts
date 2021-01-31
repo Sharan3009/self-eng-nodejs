@@ -21,7 +21,8 @@ class Mongoose {
     public connect = ():void => {
         let options:ConnectOptions = {
             useNewUrlParser:true,
-            useUnifiedTopology:true
+            useUnifiedTopology:true,
+            useCreateIndex: true
         }
         mongoose.connect(this.uri,options);
     }
