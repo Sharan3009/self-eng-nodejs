@@ -90,3 +90,7 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
     }
     return user;
 }
+
+export const self = (req:Request, res:Response) => {
+    res.send("under construction")
+}

@@ -2,7 +2,7 @@ import { Application } from "express";
 import { CustomRoute } from "../../Interface/CustomRoute";
 import appConfig from "../../config/appConfig";
 import { HttpMethods } from "../../Class/HttpMethods";
-import { signup, login } from "../controllers/userController";
+import { signup, login, self } from "../controllers/userController";
 
 class GoogleAuthRoute extends HttpMethods implements CustomRoute{
 
@@ -18,6 +18,8 @@ class GoogleAuthRoute extends HttpMethods implements CustomRoute{
        this.post(app,"signup",signup);
 
        this.post(app,"login",login);
+
+       this.get(app,"self",self)
        
     }
 }
