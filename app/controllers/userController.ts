@@ -12,8 +12,8 @@ import jwt from "../utils/jwt";
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
     try{
-        let { name, email, password } = req.body;
-        validateSignupParams(name,email,password);
+        let { name, email, password, confirmPassword } = req.body;
+        validateSignupParams(name,email,password,confirmPassword);
         password = await passUtil.hash(password);
         await ifEmailNotRegistered(email);
         await registerUser(name,email,password);
@@ -27,11 +27,23 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
     
 }
 
-const validateSignupParams = (name:string, email:string, password:string):void => {
-    if(!name || !email || !password){
-        throw new CustomError("Some required fiels are not provided");
+const validateSignupParams = (name:string, email:string, password:string, confirmPassword:string):void => {
+   let nameLength = 20;
+   let passwordLength = 8; 
+   let error:string = "";
+    if(!name || !email || !password || !confirmPassword){
+        error = "Some required fiels are not provided";
+    } else if(name.length>nameLength){
+        error = `Name cannot be more than ${nameLength} characters`;
+    } else if(password.length<passwordLength){
+        error = `Password must be atleast ${passwordLength} characters long`;
     } else if(!validation.email(email)){
-        throw new CustomError("Invalid email");
+        error = "Invalid email";
+    } else if(password!==confirmPassword){
+        error = "Passwords do not match";
+    }
+    if(error?.length){
+        throw new CustomError(error);
     }
 }
 
