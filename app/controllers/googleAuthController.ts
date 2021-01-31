@@ -43,12 +43,7 @@ const configPassport = ():void => {
 }
 
 const passportCallback = (accessToken:string,refreshToken:string,profile:Profile,done:VerifyCallback):void=>{
-    const obj:any = {
-        id: profile.id,
-        displayName: profile.displayName,
-        provider: profile.provider
-    }
-    return done(undefined,obj);
+    return done(undefined,profile);
 }
 
 const serializeUser = ():void => {

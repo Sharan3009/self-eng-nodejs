@@ -1,6 +1,7 @@
 'use strict'
 import { Schema, model } from 'mongoose';
 import { User } from '../../Interface/mongoose/User';
+import { SocialProviders } from '../../Enums/Social';
 
 let users: Schema = new Schema({
     
@@ -24,6 +25,13 @@ let users: Schema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    socialLogin:{
+        type: [{
+            id:String,
+            provider: SocialProviders
+        }],
+        default: []
     },
     verified: {
         type: Boolean,
