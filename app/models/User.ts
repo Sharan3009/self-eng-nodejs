@@ -24,7 +24,10 @@ let users: Schema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: [
+            function(this:User){ return !this.socialLogin.length },
+            `Password is required if socialLogin is not provided`
+        ]
     },
     socialLogin:{
         type: [{

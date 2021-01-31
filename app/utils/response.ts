@@ -1,5 +1,6 @@
 import CustomError from "../../Class/CustomError";
 import { ErrorResponse, SuccessResponse } from "../../Interface/Response";
+import logger from "./logger";
 
 class Response {
 
@@ -24,6 +25,7 @@ class Response {
     }
 
     public errorHandle = (err:Error):ErrorResponse => {
+        logger.error(err.message);
         let msg = "Something went wrong";
         if(err instanceof CustomError){
             msg = err.message;
