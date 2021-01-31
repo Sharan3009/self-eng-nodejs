@@ -29,7 +29,10 @@ let users: Schema = new Schema({
     socialLogin:{
         type: [{
             id:String,
-            provider: SocialProviders
+            provider: {
+                type: String,
+                enum: SocialProviders
+            }
         }],
         default: []
     },
