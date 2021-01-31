@@ -4,31 +4,73 @@ import passport, { Profile } from "passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
 import authConfig from "../../config/authConfig";
 import appConfig from "../../config/appConfig";
+import { User } from "../../Interface/mongoose/User"
+import UserModel from "../models/User";
+import { v4 } from "uuid";
+import { SocialProviders } from "../../Enums/Social";
 
 // change any to usefull iterface and remove the comment.
 const User:Model<any> = mongoose.model("User");
-let apiVersion:string = appConfig.get("apiVersion");
+const apiVersion:string = appConfig.get("apiVersion");
 
-export let authorizeSuccess = (req:Request,res:Response):void => {
+export const authorizeSuccess = async (req:Request,res:Response):Promise<any> => {
     const user:Profile = <Profile>req.user;
-    if(user && user.id){
-        res.send(`<title>custom_msg - success - ${req.cookies.authToken}</title>`)
-    } else {
+    try{
+        if(user.id){
+            await saveUser(user);
+            res.send(`<title>custom_msg - success - ${req.cookies.authToken}</title>`);
+        }
+    } catch (e){
         res.redirect(apiVersion+"google/failed");
     }
 }
 
-export let authorizeFailed = (req:Request,res:Response):void => {
-    const user:Profile = <Profile>req.user;
-    if(user && user.id){
-        res.redirect(apiVersion+"google/success");
-    } else {
-        res.send(`<title>custom_msg - failed</title>`);
+export const authorizeFailed = (req:Request,res:Response):void => {
+    res.send(`<title>custom_msg - failed</title>`);
+}
+
+export const authorizeCallback = (req:Request,res:Response):void=>{
+    res.redirect(apiVersion+"google/success");
+}
+
+const saveUser = async (profile:Profile): Promise<any> => {
+    const emailObj:any = (profile.emails as any)[0];
+    const email:string = emailObj.value;
+    const verified:boolean = emailObj.verified;
+    const id:string = profile.id;
+    const provider:SocialProviders = profile.provider as SocialProviders;
+    
+    const user:User|null = await updateProvider(email,id,provider);
+
+    if(!user){
+        await saveNewUser(profile.displayName,email,verified,id,provider)
     }
 }
 
-export let authorizeCallback = (req:Request,res:Response):void=>{
-    res.redirect(apiVersion+"google/success");
+const updateProvider = async (email:string,id:string,provider:SocialProviders):Promise<any> => {
+    return await UserModel.findOneAndUpdate(
+        {
+            email,
+            'socialLogin.id': {$ne: provider}
+        },
+        {$push: {socialLogin:{id,provider}}},
+        {
+            useFindAndModify:false
+        }
+    );
+}
+
+const saveNewUser = async (name:string,email:string,verified:boolean,id:string,provider:SocialProviders):Promise<any> => {
+    const user:User = new UserModel({
+        userId: v4(),
+        name,
+        email,
+        verified,
+        socialLogin:[
+            {id,provider}
+        ] 
+    });
+    await user.save();
 }
 
 const configPassport = ():void => {
