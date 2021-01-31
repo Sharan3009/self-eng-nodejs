@@ -1,6 +1,6 @@
 import { Application } from "express";
 import { CustomRoute } from "../../Interface/CustomRoute";
-import { authorizeSuccess, authorizeFailed,authorizeCallback } from "../controllers/googleAuthController";
+import { authorizeSuccess, authorizeError,authorizeCallback } from "../controllers/googleAuthController";
 import passport from "passport";
 import appConfig from "../../config/appConfig";
 import { HttpMethods } from "../../Class/HttpMethods";
@@ -20,9 +20,9 @@ class GoogleAuthRoute extends HttpMethods implements CustomRoute{
 
        this.get(app,"success",authorizeSuccess);
 
-       this.get(app,"failed",authorizeFailed);
+       this.get(app,"error",authorizeError);
 
-       this.get(app,"callback",passport.authenticate("google",{failureRedirect:GoogleAuthRoute.apiVersion+"google/failed"}),authorizeCallback);
+       this.get(app,"callback",passport.authenticate("google",{failureRedirect:GoogleAuthRoute.apiVersion+"google/error"}),authorizeCallback);
        
     }
 }

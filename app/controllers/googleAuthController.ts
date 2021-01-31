@@ -21,12 +21,12 @@ export const authorizeSuccess = async (req:Request,res:Response):Promise<any> =>
             res.send(`<title>custom_msg - success - ${req.cookies.authToken}</title>`);
         }
     } catch (e){
-        res.redirect(apiVersion+"google/failed");
+        res.redirect(apiVersion+"google/error");
     }
 }
 
-export const authorizeFailed = (req:Request,res:Response):void => {
-    res.send(`<title>custom_msg - failed</title>`);
+export const authorizeError = (req:Request,res:Response):void => {
+    res.send(`<title>custom_msg - error</title>`);
 }
 
 export const authorizeCallback = (req:Request,res:Response):void=>{
