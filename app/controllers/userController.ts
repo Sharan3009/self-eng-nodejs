@@ -95,7 +95,7 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
     const user:User|null = await UserModel.findOne({email});
     if(!user){
         throw new CustomError("Email is not registered");
-    } else if(user.verified){
+    } else if(!user.verified){
         throw new CustomError("Email is not verified");
     } else if(!await passUtil.compare(password,user.password)){
         throw new CustomError("Incorrect password");
