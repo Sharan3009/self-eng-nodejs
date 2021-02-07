@@ -35,10 +35,10 @@ const validateSignupParams = (name:string, email:string, password:string, confir
         error = "Some required fiels are not provided";
     } else if(!validation.username(name)){
         error = `Name cannot be more than ${maxNameLength} characters`;
-    } else if(!validation.password(password)){
-        error = `Password must be atleast ${minPasswordLength} characters long`;
     } else if(!validation.email(email)){
         error = "Invalid email";
+    } else if(!validation.password(password)){
+        error = `Password must be atleast ${minPasswordLength} characters long`;
     } else if(password!==confirmPassword){
         error = "Passwords do not match";
     }

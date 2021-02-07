@@ -31,10 +31,6 @@ let users: Schema = new Schema({
         required: [
             function(this:User){ return !this.socialLogin.length },
             `Password is required if socialLogin is not provided`
-        ],
-        minlength: [
-            function(this:User){ return (!this.socialLogin.length)?userConfig.minPasswordLength:null},
-            `Password must be atleast ${userConfig.minPasswordLength} characters long`
         ]
     },
     socialLogin:{
