@@ -17,6 +17,7 @@ startup.useMorgan()
 .useBodyParser()
 .useCookieParser()
 .useHelmet()
+.useCors()
 .includeModels()
 .includeRoutes()
 .connectDB();
