@@ -10,6 +10,7 @@ import { CustomRoute } from '../../Interface/CustomRoute';
 import path from "path";
 import passport from "passport";
 import session from "cookie-session";
+import cors from "cors";
 
 export default class AppStartUtil{
 
@@ -34,6 +35,11 @@ export default class AppStartUtil{
 
     public useHelmet = ():AppStartUtil => {
         this.app.use(helmet())
+        return this;
+    }
+
+    public useCors = ():AppStartUtil => {
+        this.app.use(cors());
         return this;
     }
 
