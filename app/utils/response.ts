@@ -24,13 +24,13 @@ class Response {
         return resp;
     }
 
-    public errorHandle = (err:Error):ErrorResponse => {
+    public errorHandle = (err:Error):string => {
         logger.error(err.message);
         let msg = "Something went wrong";
         if(err instanceof CustomError){
             msg = err.message;
         }
-        return this.error(msg);
+        return msg;
     }
 }
 

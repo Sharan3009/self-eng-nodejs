@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ErrorResponse, SuccessResponse } from "../../Interface/Response";
 import CustomError from "../../Class/CustomError";
 import { User } from "../../Interface/mongoose/User";
 import UserModel from "../models/User";
@@ -18,12 +17,10 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
         password = await passUtil.hash(password);
         await ifEmailNotRegistered(email);
         await registerUser(name,email,password);
-        const resp:SuccessResponse<string> = response.success("Registration successful");
-        res.send(resp);
+        res.send("Registration successful");
 
     } catch (e){
-        const resp: ErrorResponse = response.errorHandle(e);
-        res.status(400).send(resp);
+        res.status(400).send(response.errorHandle(e));
     }
     
 }
@@ -74,11 +71,9 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         const user:User = await ifValidUser(email,password);
         const {id,name} = user;
         const token:string = await jwt.sign({id,name,email});
-        const resp:SuccessResponse<string> = response.success(token);
-        res.send(resp);
+        res.send(token);
     } catch (e){
-        const resp: ErrorResponse = response.errorHandle(e);
-        res.status(400).send(resp);
+        res.status(400).send(response.errorHandle(e));
     }
 
 }
