@@ -1,5 +1,7 @@
+import { CorsOptions } from "cors";
 import { Server as Http } from "http";
 import { Server } from "socket.io";
+import config from "../../config/appConfig";
 import e from "./connectionEvents";
 
 class AppSocket {
@@ -9,7 +11,9 @@ class AppSocket {
     public connect = (server:Http):void =>{
 
         if(!AppSocket.io){
-            AppSocket.io = new Server(server);
+            AppSocket.io = new Server(server,{
+                cors: <CorsOptions>config.get("ALLOWED_CORS_ORIGIN")
+            });
             this.attachEvents();
         }
     }
