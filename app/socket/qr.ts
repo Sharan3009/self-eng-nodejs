@@ -7,7 +7,11 @@ export const generateQR = (socket:Socket) => {
     const channel:string = "GENERATE_QR";
     socket.on(channel,(text:string)=>{
         let resp:Response<any> = null;
-        qr.toDataURL(text,(err:Error,url:string)=>{
+        qr.toDataURL(text,
+            {
+                margin:0
+            },
+            (err:Error,url:string)=>{
             if(err){
                 resp = response.error(err.message);
             } else {
