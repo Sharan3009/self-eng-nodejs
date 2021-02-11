@@ -18,7 +18,7 @@ export const authorizeSuccess = async (req:Request,res:Response):Promise<any> =>
     try{
         if(user.id){
             await saveUser(user);
-            res.send(`<title>custom_msg - success - ${req.cookies.token}</title>`);
+            res.send(`<title>custom_msg - success - ${req.cookies.authtoken}</title>`);
         }
     } catch (e){
         res.redirect(apiVersion+"google/error");

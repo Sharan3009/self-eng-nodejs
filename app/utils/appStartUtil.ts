@@ -95,7 +95,7 @@ export default class AppStartUtil{
 
     public useExpressSession = ():AppStartUtil => {
         this.app.use(session({
-            name:"token",
+            name:"authtoken",
             keys: ["key1","key2"]
         }))
         return this;
