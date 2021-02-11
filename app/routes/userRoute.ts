@@ -19,7 +19,7 @@ class GoogleAuthRoute extends HttpMethods implements CustomRoute{
 
        this.post(app,"login",login);
 
-       this.get(app,"clientToken",clientToken);
+       this.get(app,"client",clientToken);
        
     }
 }
