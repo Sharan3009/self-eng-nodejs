@@ -101,7 +101,7 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
     return user;
 }
 
-export const clientAuthToken = async (req:Request, res:Response):Promise<any> => {
+export const clientToken = async (req:Request, res:Response):Promise<any> => {
     try{
         const token:string = await jwt.sign(JwtType.ano,{
             id:v4()
