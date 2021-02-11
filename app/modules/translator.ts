@@ -46,7 +46,7 @@ class Translate {
         try{
             await this.startPolling(1,5,x);
         } catch (e){
-            return new Error(e);
+            throw new Error(e);
         }
         const y = await (await x[0].getProperty("innerText")).jsonValue();
         return y;
@@ -59,11 +59,11 @@ class Translate {
     private startPolling = async (curr:number,tot:number,x:puppeteer.ElementHandle<Element>[]) :Promise<any> => {
         const getClass = await (await x[0].getProperty("className")).jsonValue();
         if(getClass!=="mttextarea" && curr>tot){
-            return new Error("Not found");
+            throw new Error("Not found");
         } else if(getClass==="mttextarea"){
             return 200;
         } else if (curr>tot){
-            return new Error("Not found");
+            throw new Error("Not found");
         }
         await new Promise((res,rej)=>{
             setTimeout(res,500);
