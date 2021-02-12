@@ -8,6 +8,7 @@ import validation from "../utils/validation";
 import passUtil from "../utils/passwordUtil";
 import jwt from "../utils/jwt";
 import userConfig from "../../config/userConfig";
+import { ExposedHeaders } from "../../Enums/Cors";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -73,7 +74,8 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         const token:string = await jwt.sign({
             id,name,email
         });
-        res.send(token);
+        res.setHeader(ExposedHeaders.auth,token);
+        res.send();
     } catch (e){
         res.status(400).send(response.errorHandle(e));
     }
@@ -107,7 +109,8 @@ export const clientToken = async (req:Request, res:Response):Promise<any> => {
         const token:string = await jwt.sign({
             id:v4()
         });
-        res.send(token);
+        res.setHeader(ExposedHeaders.client,token);
+        res.send();
     } catch (e){
         res.status(400).send(response.errorHandle(e));
     }
