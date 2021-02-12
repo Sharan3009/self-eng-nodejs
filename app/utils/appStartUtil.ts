@@ -11,6 +11,7 @@ import path from "path";
 import passport from "passport";
 import session from "cookie-session";
 import cors from "cors";
+import { ExposedHeaders } from '../../Enums/Cors';
 
 export default class AppStartUtil{
 
@@ -39,7 +40,9 @@ export default class AppStartUtil{
     }
 
     public useCors = ():AppStartUtil => {
-        this.app.use(cors());
+        this.app.use(cors({
+            exposedHeaders: [ExposedHeaders.auth,ExposedHeaders.client]
+        }));
         return this;
     }
 
