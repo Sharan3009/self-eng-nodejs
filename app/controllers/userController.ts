@@ -8,7 +8,6 @@ import validation from "../utils/validation";
 import passUtil from "../utils/passwordUtil";
 import jwt from "../utils/jwt";
 import userConfig from "../../config/userConfig";
-import { JwtType } from "../../Enums/Jwt";
 
 export const signup = async (req:Request,res:Response):Promise<any> =>{
 
@@ -71,7 +70,7 @@ export const login = async (req:Request, res:Response):Promise<any> => {
         validateLoginParams(email,password);
         const user:User = await ifValidUser(email,password);
         const {id,name} = user;
-        const token:string = await jwt.sign(JwtType.user,{
+        const token:string = await jwt.sign({
             id,name,email
         });
         res.send(token);
@@ -103,7 +102,7 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
 
 export const clientToken = async (req:Request, res:Response):Promise<any> => {
     try{
-        const token:string = await jwt.sign(JwtType.ano,{
+        const token:string = await jwt.sign({
             id:v4()
         });
         res.send(token);
