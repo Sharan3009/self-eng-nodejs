@@ -25,7 +25,7 @@ const config:convict.Config<GoogleAuthConfig & JWTConfig> = convict({
             if (!val) throw new Error("JWT_SECRET cannot be empty and should be complex");
         },
         env: "JWT_SECRET",
-        default:"this-is@my&very(long&complex)secret!key*that%ICANTHINKOF"
+        default:"this-is@my&very(long&complex)secret!key*that%I-CANT_THINK%OF"
     },
     jwtExpiresIn: {
         default:"1d"
