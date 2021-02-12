@@ -28,7 +28,7 @@ const config:convict.Config<GoogleAuthConfig & JWTConfig> = convict({
         default:"this-is@my&very(long&complex)secret!key*that%I-CANT_THINK%OF"
     },
     jwtExpiresIn: {
-        default:"1d"
+        default:"7d"
     }
 })
 
