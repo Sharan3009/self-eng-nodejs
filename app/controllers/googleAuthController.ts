@@ -48,16 +48,24 @@ const saveUser = async (profile:Profile): Promise<any> => {
 }
 
 const updateProvider = async (email:string,id:string,provider:SocialProviders):Promise<any> => {
-    return await UserModel.findOneAndUpdate(
-        {
-            email,
-            'socialLogin.id': {$ne: provider}
-        },
-        {$push: {socialLogin:{id,provider}}},
-        {
-            useFindAndModify:false
+    const user:User|null = await UserModel.findOne({email}).lean();
+    if(user){
+        const providerExist:boolean = user.socialLogin.some((login:any)=>{
+            return login.id===id && login.provider===provider;
+        });
+        if(providerExist){
+            return user;
+        } else {
+            await UserModel.updateOne({email},{
+                $push: {
+                    socialLogin:{
+                        id,provider
+                    }
+                }
+            })
         }
-    );
+    }
+    return user;
 }
 
 const saveNewUser = async (name:string,email:string,verified:boolean,id:string,provider:SocialProviders):Promise<any> => {

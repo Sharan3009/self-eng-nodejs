@@ -94,8 +94,10 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
         throw new CustomError("Email is not registered");
     } else if(!user.verified){
         throw new CustomError("Email is not verified");
-    } else if(!await passUtil.compare(password,user.password)){
+    } else if(user.password && !await passUtil.compare(password,user.password)){
         throw new CustomError("Incorrect password");
+    } else if(user.socialLogin.length){
+        throw new CustomError("Email is registered with social login");
     }
     return user;
 }
