@@ -36,5 +36,19 @@ export const setResponseTokens = async (headers:any):Promise<any> => {
         })
         obj.clienttoken = clienttoken;
     }
+    if(authtoken){
+        try{
+            await jwt.verify(authtoken);
+        } catch(e:any){
+            const tokenObj:any = jwt.decode(authtoken);
+            if(tokenObj){
+                const {id, name, email} = tokenObj;
+                authtoken = await jwt.sign({
+                    id,name,email
+                })
+            }
+            obj.authtoken = authtoken;
+        }
+    }
     return obj;
 }
