@@ -1,10 +1,8 @@
 import { CorsOptions } from "cors";
 import { Server as Http } from "http";
 import { Server, Socket } from "socket.io";
-import { v4 } from "uuid";
 import config from "../../config/appConfig";
-import { getTokens } from "../utils/helperFunctions";
-import jwt from "../utils/jwt";
+import { setResponseTokens } from "../utils/helperFunctions";
 import e from "./connectionEvents";
 
 class AppSocket {
@@ -32,29 +30,13 @@ class AppSocket {
 
     private middleware = ():void => {
         AppSocket.io.use(async (socket:Socket,next)=>{
-            let { authToken, clientToken } = getTokens(socket.request.headers.authorization);
-            if(clientToken){
-                jwt.verify(clientToken)
-                .then(next)
-                .catch(async ()=>{
-                    const tokenObj:any = jwt.decode(clientToken);
-                    let id:string = v4();
-                    if(tokenObj && tokenObj.id){
-                        id = tokenObj.id;
-                    }
-                    clientToken = await jwt.sign({
-                        id
-                    })
-                    socket.request.headers.clientToken = clientToken;
-                    next();
-                });
-            } else {
-                clientToken = await jwt.sign({
-                    id:v4()
-                })
-                socket.request.headers.clientToken = clientToken;
-                next();
+            let headers:any = socket.request.headers;
+            const obj:any = await setResponseTokens(headers);
+            socket.request.headers = {
+                ...headers,
+                ...obj
             }
+            next();
         })
     }
 }

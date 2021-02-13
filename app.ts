@@ -23,6 +23,7 @@ startup.useMorgan()
 .connectDB()
 .useExpressSession()
 .usePassport()
+.setResponseTokenMiddleware()
 .includeModels()
 .includeRoutes();
 

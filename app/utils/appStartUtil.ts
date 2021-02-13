@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import { Application, NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -12,6 +12,7 @@ import passport from "passport";
 import session from "cookie-session";
 import cors from "cors";
 import { ExposedHeaders } from '../../Enums/Cors';
+import { setResponseTokens } from './helperFunctions';
 
 export default class AppStartUtil{
 
@@ -107,6 +108,15 @@ export default class AppStartUtil{
     public usePassport = ():AppStartUtil => {
         this.app.use(passport.initialize());
         this.app.use(passport.session());
+        return this;
+    }
+
+    public setResponseTokenMiddleware = ():AppStartUtil => {
+        this.app.use(async (req:Request,res:Response, next:NextFunction)=>{
+            const obj:any = await setResponseTokens(req.headers);
+            res.set(obj);
+            next();
+        })
         return this;
     }
 }

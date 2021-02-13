@@ -4,10 +4,10 @@ import { generateQR } from "./qr";
 class ConnectionEvents {
     public onConnection = (io:Server):void => {
         io.on("connection",function(socket:Socket){
-            const {clientToken} = socket.request.headers;
+            const {clienttoken} = socket.request.headers;
             // this callback executes when client connects succesfully
-            if(clientToken){
-                socket.emit("authorization",{clientToken});
+            if(clienttoken){
+                socket.emit("authorization",{clienttoken});
             }
             generateQR(socket);
         })

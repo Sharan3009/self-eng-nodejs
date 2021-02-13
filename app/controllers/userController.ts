@@ -65,7 +65,6 @@ const registerUser = async (name:string,email:string,password:string):Promise<an
 }
 
 export const login = async (req:Request, res:Response):Promise<any> => {
-
     try{
         let { email, password } = req.body;
         validateLoginParams(email,password);
@@ -104,14 +103,3 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
     return user;
 }
 
-export const clientToken = async (req:Request, res:Response):Promise<any> => {
-    try{
-        const token:string = await jwt.sign({
-            id:v4()
-        });
-        res.setHeader(ExposedHeaders.client,token);
-        res.send();
-    } catch (e){
-        res.status(400).send(response.errorHandle(e));
-    }
-}
