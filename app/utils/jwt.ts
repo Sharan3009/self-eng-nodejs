@@ -1,4 +1,4 @@
-import { verify, sign, Secret, SignOptions } from "jsonwebtoken";
+import { verify, sign, Secret, SignOptions, decode } from "jsonwebtoken";
 import config from "../../config/authConfig";
 import { promisify } from "util";
 import CustomError from "../../Class/CustomError";
@@ -18,13 +18,17 @@ class JWT {
         }
     }
 
-    public verify = async (token:string):Promise<void> => {
+    public verify = async (token:string):Promise<any> => {
         try{
             const verifyAsync = promisify<any,Secret>(verify);
             return await verifyAsync(token,this.secret);
         } catch (e){
             throw new CustomError("The session is expired");
         }
+    }
+
+    public decode = (token:string):any => {
+        return decode(token);
     }
 }
 
