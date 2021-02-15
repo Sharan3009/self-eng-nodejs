@@ -40,7 +40,6 @@ export const setResponseTokens = async (headers:any):Promise<Tokens> => {
     }
     if(authtoken){
         try{
-            console.log(jwt.decode(authtoken));
             await jwt.verify(authtoken);
         } catch(e:any){
             const tokenObj:any = jwt.decode(authtoken);

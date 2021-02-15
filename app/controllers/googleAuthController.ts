@@ -8,6 +8,7 @@ import { User } from "../../Interface/mongoose/User"
 import UserModel from "../models/User";
 import { v4 } from "uuid";
 import { SocialProviders } from "../../Enums/Social";
+import jwt from "../utils/jwt";
 
 // change any to usefull iterface and remove the comment.
 const User:Model<any> = mongoose.model("User");
@@ -17,8 +18,8 @@ export const authorizeSuccess = async (req:Request,res:Response):Promise<any> =>
     const user:Profile = <Profile>req.user;
     try{
         if(user.id){
-            await saveUser(user);
-            res.send(`<title>custom_msg - success - ${req.cookies.authtoken}</title>`);
+            const token:string = await saveUserAndGetToken(user);
+            res.send(`<title>custom_msg - success - ${token}</title>`);
         }
     } catch (e){
         res.redirect(apiVersion+"google/error");
@@ -33,18 +34,20 @@ export const authorizeCallback = (req:Request,res:Response):void=>{
     res.redirect(apiVersion+"google/success");
 }
 
-const saveUser = async (profile:Profile): Promise<any> => {
+const saveUserAndGetToken = async (profile:Profile): Promise<string> => {
     const emailObj:any = (profile.emails as any)[0];
     const email:string = emailObj.value;
     const verified:boolean = emailObj.verified;
     const id:string = profile.id;
     const provider:SocialProviders = profile.provider as SocialProviders;
+    const name:string = profile.displayName;
     
     const user:User|null = await updateProvider(email,id,provider);
 
     if(!user){
-        await saveNewUser(profile.displayName,email,verified,id,provider)
+        await saveNewUser(name,email,verified,id,provider)
     }
+    return await jwt.sign({id,email,name})
 }
 
 const updateProvider = async (email:string,id:string,provider:SocialProviders):Promise<any> => {
