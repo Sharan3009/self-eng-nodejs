@@ -73,7 +73,7 @@ const updateProvider = async (email:string,id:string,provider:SocialProviders):P
 
 const saveNewUser = async (name:string,email:string,verified:boolean,id:string,provider:SocialProviders):Promise<any> => {
     const user:User = new UserModel({
-        userId: v4(),
+        id: v4(),
         name,
         email,
         verified,

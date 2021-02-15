@@ -5,7 +5,6 @@ import UserModel from "../models/User";
 import { v4 } from "uuid";
 import response from "../utils/response";
 import validation from "../utils/validation";
-import passUtil from "../utils/passwordUtil";
 import jwt from "../utils/jwt";
 import userConfig from "../../config/userConfig";
 import { ExposedHeaders } from "../../Enums/Cors";
@@ -15,7 +14,6 @@ export const signup = async (req:Request,res:Response):Promise<any> =>{
     try{
         let { name, email, password, confirmPassword } = req.body;
         validateSignupParams(name,email,password,confirmPassword);
-        password = await passUtil.hash(password);
         await ifEmailNotRegistered(email);
         await registerUser(name,email,password);
         res.send("Registration successful");
@@ -55,7 +53,7 @@ const ifEmailNotRegistered = async (email:string):Promise<any> =>{
 const registerUser = async (name:string,email:string,password:string):Promise<any> => {
 
     const newUser:User = new UserModel({
-        userId: v4(),
+        id: v4(),
         name,
         email,
         password
@@ -95,7 +93,7 @@ const ifValidUser = async (email:string,password:string):Promise<any> => {
         throw new CustomError("Email is not registered");
     } else if(!user.verified){
         throw new CustomError("Email is not verified");
-    } else if(user.password && !await passUtil.compare(password,user.password)){
+    } else if(user.password && !await user.comparePassword(password,user.password)){
         throw new CustomError("Incorrect password");
     } else if(user.socialLogin.length){
         throw new CustomError("Email is registered with social login");

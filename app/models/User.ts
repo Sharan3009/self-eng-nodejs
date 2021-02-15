@@ -5,10 +5,11 @@ import { SocialProviders } from '../../Enums/Social';
 import config from "../../config/appConfig";
 import { Environment } from '../../Enums/Environment';
 import userConfig from "../../config/userConfig";
+import { genSalt, hash, compare } from "bcrypt";
 
 let users: Schema = new Schema({
     
-    userId: {
+    id: {
         type: String,
         required: true,
         index: true,
@@ -52,6 +53,25 @@ let users: Schema = new Schema({
         default: Date.now()
     },
     
+})
+
+users.methods = {
+    comparePassword : async (password:string,encryptedPassword:string):Promise<boolean> => {
+        const comparePassword:boolean = await compare(password,encryptedPassword);
+        return comparePassword;
+    }
+}
+
+
+users.pre<User>("save", async function(next){
+    try{
+        const salt:string = await genSalt();
+        const hashPassword:string = await hash(this.password,salt);
+        this.password = hashPassword;
+        next();
+    } catch(e:any){
+        next(e.message);
+    }
 })
 
 export default model<User>('User', users);
