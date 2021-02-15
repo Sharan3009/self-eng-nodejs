@@ -9,3 +9,8 @@ export interface ErrorResponse {
     status: "error",
     message: string
 }
+
+export interface Tokens {
+    authtoken?: string,
+    clienttoken?:string
+}

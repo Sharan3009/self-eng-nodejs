@@ -1,8 +1,9 @@
 import { v4 } from "uuid";
 import jwt from "./jwt";
 import { Socket } from "socket.io";
+import { Tokens } from "../../Interface/Response";
 
-export const getTokens = (auth:string|undefined):any => {
+export const getTokens = (auth:string|undefined):Tokens => {
     const obj:any = {};
     if(!auth){
         return obj;
@@ -14,9 +15,9 @@ export const getTokens = (auth:string|undefined):any => {
     return obj;
 }
 
-export const setResponseTokens = async (headers:any):Promise<any> => {
+export const setResponseTokens = async (headers:any):Promise<Tokens> => {
     let { authtoken, clienttoken } = getTokens(headers.authorization);
-    let obj:any = {};
+    const obj:Tokens = {};
     if(clienttoken){
         try{
             await jwt.verify(clienttoken);
@@ -39,6 +40,7 @@ export const setResponseTokens = async (headers:any):Promise<any> => {
     }
     if(authtoken){
         try{
+            console.log(jwt.decode(authtoken));
             await jwt.verify(authtoken);
         } catch(e:any){
             const tokenObj:any = jwt.decode(authtoken);
