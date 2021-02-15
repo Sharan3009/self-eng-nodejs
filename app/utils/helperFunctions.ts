@@ -1,5 +1,6 @@
 import { v4 } from "uuid";
 import jwt from "./jwt";
+import { Socket } from "socket.io";
 
 export const getTokens = (auth:string|undefined):any => {
     const obj:any = {};
@@ -51,4 +52,12 @@ export const setResponseTokens = async (headers:any):Promise<any> => {
         }
     }
     return obj;
+}
+
+export const setKeyToSocket = (socket:Socket,key:string,value:any):void => {
+    (socket as any)[key] = value;
+}
+
+export const getKeyFromSocket = (socket:Socket,key:string):any => {
+    return (socket as any)[key];
 }
