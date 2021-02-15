@@ -7,16 +7,18 @@ import { v5, v4 } from "uuid";
 export const generateQR = (socket:Socket) => {
     const channel:string = "GENERATE_QR";
     let resp:Response<any> = null;
-    qr.toDataURL(v5(socket.id,v4()),
+    socket.on(channel,()=>{
+        qr.toDataURL(v5(socket.id,v4()),
         {
             margin:0
         },
         (err:Error,url:string)=>{
-        if(err){
-            resp = response.error(err.message);
-        } else {
-            resp = response.success(url);
-        }
-        socket.emit(channel,resp);
+            if(err){
+                resp = response.error(err.message);
+            } else {
+                resp = response.success(url);
+            }
+            socket.emit(channel,resp);
+        })
     })
 }
