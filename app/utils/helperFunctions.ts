@@ -24,7 +24,7 @@ export const setResponseTokens = async (headers:any):Promise<Tokens> => {
         } catch(e:any){
             const tokenObj:any = jwt.decode(clienttoken);
             let id:string = v4();
-            if(tokenObj && tokenObj.id){
+            if(tokenObj){
                 id = tokenObj.id;
             }
             clienttoken = await jwt.sign({

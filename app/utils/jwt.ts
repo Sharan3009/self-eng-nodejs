@@ -28,7 +28,7 @@ class JWT {
     }
 
     public decode = (token:string):any => {
-        return decode(token);
+        return verify(token,this.secret,{ ignoreExpiration:true })
     }
 }
 
