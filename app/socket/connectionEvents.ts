@@ -1,7 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { ExposedHeaders } from "../../Enums/Cors";
 import { Tokens } from "../../Interface/Response";
-import { getKeyFromSocket } from "../utils/helperFunctions";
+import { getMeaning } from "./dictionary";
 import { generateQR } from "./qr";
 
 class ConnectionEvents {
@@ -20,6 +19,7 @@ class ConnectionEvents {
                 socket.emit("authorization",tokens);
             }
             generateQR(socket);
+            getMeaning(socket);
         })
     }
 }
