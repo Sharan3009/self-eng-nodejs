@@ -27,7 +27,7 @@ class Dictionary extends FetchPage {
 				throw new CustomError(data.message);
 			}
 		} catch (e:any) {
-			logger.error(e);
+			logger.error(e.message);
 			throw new CustomError(e);
 
 		}
