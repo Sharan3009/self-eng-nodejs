@@ -4,8 +4,9 @@ import { Executor } from "../../Interface/Executor";
 import logger from "../utils/logger";
 
 import {definitionConfig as d} from "../../config/dictionaryConfig";
-import { DictDefinition, DictMeaning, DictMeanings, DictPhonetic, DictPhonetics, DictResponse, DictTitle } from "../../Interface/Dictionary";
+import { DictData, DictDefinition, DictMeaning, DictMeanings, DictPhonetic, DictPhonetics, DictResponse, DictTitle } from "../../Interface/Dictionary";
 import { FetchPage } from "../../Class/FetchPage";
+import { Error } from "mongoose";
 
 class Dictionary extends FetchPage {
 
@@ -13,28 +14,24 @@ class Dictionary extends FetchPage {
 	private word:string;
 	private lang:string = "en";
 
-	public define = (word:string):Promise<DictResponse> => {
+	public getMeaning = async (word:string):Promise<DictData> => {
 
 		this.word = word;
-		return new Promise<DictResponse>((resolve:Executor<DictResponse>,reject:Executor<DictResponse>)=>{
-
+		try {
 			const path = `/${this.lang}${d.path}${this.word}`;
+			const resp:string = await this.getPage(d.hostname,path);
+			this.$ = cheerio.load(resp);
+			const data:DictResponse = this.scrapData();
+			if(data.status==="success"){
+				return data.data;
+			} else {
+				throw new Error(data.message);
+			}
+		} catch (e:any) {
+			logger.error(e);
+			throw new Error(e);
 
-			this.getPage(d.hostname,path).then((resp:string)=>{
-
-				this.$ = cheerio.load(resp);
-				const data:DictResponse = this.scrapData();
-				if(data.status==='success'){
-					resolve(data);
-				} else {
-					reject(data);
-				}
-				
-			}).catch((reason:string)=>{
-				logger.error(reason);
-			})
-		})
-
+		}
 	}
 
 	private scrapData = ():DictResponse => {

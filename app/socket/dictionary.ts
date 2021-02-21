@@ -1,14 +1,19 @@
 import { Socket } from "socket.io";
-import { DictResponse } from "../../Interface/Dictionary";
+import { DictData } from "../../Interface/Dictionary";
 import { Response } from "../../Interface/Response";
+import response from "../utils/response";
 import dictionary from "../modules/dictionary";
 
 export const getMeaning = (socket:Socket) => {
     const channel:string = "GET_MEANING";
-    let resp:DictResponse;
-    console.log(channel);
+    let resp:Response<any>;
     socket.on(channel,async (word:string)=>{
-        resp = await dictionary.define(word);
-        socket.emit(channel,resp)
+        try {
+            const data:DictData = await dictionary.getMeaning(word);
+            resp = response.success(data);
+        } catch(e:any){
+            resp = response.error(e);
+        }
+        socket.emit(channel,resp);
     })
 }
