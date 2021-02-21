@@ -12,7 +12,8 @@ export const getMeaning = (socket:Socket) => {
             const data:DictData = await dictionary.getMeaning(word);
             resp = response.success(data);
         } catch(e:any){
-            resp = response.error(e);
+            const err:Error = e as Error;
+            resp = response.error(err.message);
         }
         socket.emit(channel,resp);
     })

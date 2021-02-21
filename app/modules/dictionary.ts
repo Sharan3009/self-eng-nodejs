@@ -1,12 +1,11 @@
 
 import cheerio from "cheerio";
-import { Executor } from "../../Interface/Executor";
 import logger from "../utils/logger";
 
 import {definitionConfig as d} from "../../config/dictionaryConfig";
 import { DictData, DictDefinition, DictMeaning, DictMeanings, DictPhonetic, DictPhonetics, DictResponse, DictTitle } from "../../Interface/Dictionary";
 import { FetchPage } from "../../Class/FetchPage";
-import { Error } from "mongoose";
+import CustomError from "../../Class/CustomError";
 
 class Dictionary extends FetchPage {
 
@@ -25,11 +24,11 @@ class Dictionary extends FetchPage {
 			if(data.status==="success"){
 				return data.data;
 			} else {
-				throw new Error(data.message);
+				throw new CustomError(data.message);
 			}
 		} catch (e:any) {
 			logger.error(e);
-			throw new Error(e);
+			throw new CustomError(e);
 
 		}
 	}
