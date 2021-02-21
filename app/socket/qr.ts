@@ -1,14 +1,14 @@
 import { Socket } from "socket.io";
 import qr from "qrcode";
 import response from "../utils/response";
-import { Response } from "../../Interface/Response";
+import { Response, SocketData } from "../../Interface/Response";
 import { v5, v4 } from "uuid";
 import { getKeyFromSocket, setKeyToSocket } from "../utils/helperFunctions";
 
 export const generateQR = (socket:Socket) => {
     const channel:string = "GENERATE_QR";
     let resp:Response<any> = null;
-    socket.on(channel,()=>{
+    socket.on(channel,({rnd}:SocketData)=>{
         let qrCode:string = v5(socket.id,v4());
         openQrSocketChannel(socket,qrCode);
         qr.toDataURL(qrCode,
@@ -17,9 +17,9 @@ export const generateQR = (socket:Socket) => {
         },
         (err:Error,url:string)=>{
             if(err){
-                resp = response.error(err.message);
+                resp = response.error(rnd,err.message);
             } else {
-                resp = response.success(url);
+                resp = response.success(rnd,url);
             }
             socket.emit(channel,resp);
         })

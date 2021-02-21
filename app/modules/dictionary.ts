@@ -40,6 +40,7 @@ class Dictionary extends FetchPage {
 		if(obj.title){
 			return {
 				status:"success",
+				rnd:"",
 				data: {
 					...obj,
 					...this.getAudios(),
@@ -49,6 +50,7 @@ class Dictionary extends FetchPage {
 		}
 		return {
 			status:"error",
+			rnd:"",
 			message:`No match found for the word '${this.word}'`
 		}
 	}

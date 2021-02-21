@@ -4,20 +4,22 @@ import logger from "./logger";
 
 class Response {
 
-    public success = <T>(data:T):SuccessResponse<T> => {
+    public success = <T>(rnd:string,data:T):SuccessResponse<T> => {
 
         const resp:SuccessResponse<T> = {
             status: "success",
+            rnd,
             data
         }
 
         return resp;
     }
 
-    public error = (message:string):ErrorResponse => {
+    public error = (rnd:string,message:string):ErrorResponse => {
         
         const resp: ErrorResponse = {
             status: "error",
+            rnd,
             message
         }
 
